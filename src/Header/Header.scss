@@ -1,0 +1,49 @@
+.header {
+    height: 56px;
+    background-color: rgb(49, 49, 49);
+    display: flex;
+    justify-content: center;
+    user-select: none;
+
+    &_stats {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        flex-grow: 50;
+        
+        h1 {
+            margin: 0;
+            padding: 0;
+        }
+        h3 {
+            margin: 0;
+            padding: 0;
+            width: 73px;
+        }
+    }
+
+    &_profile {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-grow: 1;
+
+        img {
+            width: 40px;
+            height: 40px;
+        }
+
+        &_info {
+            h3 {
+                margin: 0;
+                padding: 0;
+            }
+            h4 {
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+
+}

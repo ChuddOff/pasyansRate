@@ -1,0 +1,120 @@
+.header2 {
+    background-color: rgb(43, 123, 59);
+
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 100px;
+    gap: 100px;
+
+    .givenCards {
+
+        display: flex;
+        max-width: 300px;
+        width: 100%;
+        justify-content: space-between;
+        gap: 30px;
+
+        .cardButton {
+            width: 90px;
+            height: 130px;
+            pointer-events: none;
+            user-select: none; /* Safari */
+            -webkit-user-select: none; /* Chrome all / Safari all */
+            -moz-user-select: none; /* Firefox all */
+            -ms-user-select: none; /* IE 10+ */
+        }
+
+        .list {
+            display: flex;
+        }
+    }
+
+    .cardState {
+        max-width: 900px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+
+        
+
+        img {
+            width: 90px;
+            height: 130px;
+            pointer-events: none;
+            user-select: none; /* Safari */
+            -webkit-user-select: none; /* Chrome all / Safari all */
+            -moz-user-select: none; /* Firefox all */
+            -ms-user-select: none; /* IE 10+ */
+        }
+
+        .card {
+    
+            background-color: white;
+        
+            box-shadow: 0 0 2px rgb(0, 0, 0);;
+        
+            width: 90px;
+            height: 130px;
+        
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        
+            border-radius: 5%;
+        
+            position: relative;
+        
+        
+            img {
+                pointer-events: none;
+                user-select: none; /* Safari */
+                -webkit-user-select: none; /* Chrome all / Safari all */
+                -moz-user-select: none; /* Firefox all */
+                -ms-user-select: none; /* IE 10+ */
+                width: 70px;
+                height: 75px;
+            }
+        
+            &_detail {
+                
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+        
+                h4 {
+                    pointer-events: none;
+                    user-select: none; /* Safari */
+                    -webkit-user-select: none; /* Chrome all / Safari all */
+                    -moz-user-select: none; /* Firefox all */
+                    -ms-user-select: none; /* IE 10+ */
+                    color: black;
+                    font-size:35px;
+                    font-weight:bold;
+                    margin: 0;
+                }
+                img {
+                    pointer-events: none;
+                    user-select: none; /* Safari */
+                    -webkit-user-select: none; /* Chrome all / Safari all */
+                    -moz-user-select: none; /* Firefox all */
+                    -ms-user-select: none; /* IE 10+ */
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+            .fakecard {
+                pointer-events: none;
+                user-select: none; /* Safari */
+                -webkit-user-select: none; /* Chrome all / Safari all */
+                -moz-user-select: none; /* Firefox all */
+                -ms-user-select: none; /* IE 10+ */
+                position: relative;
+                width: 90px;
+                height: 130px;
+            }
+        }
+    }
+}
