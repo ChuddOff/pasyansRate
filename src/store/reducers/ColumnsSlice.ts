@@ -156,7 +156,7 @@ const ColumnsSlice = createSlice({
 
                 state.placeHolders[suitIndex].splice(state.placeHolders[suitIndex].length-1, 1)
 
-                state.placeHoldersReq[suitIndex] = valueArr[valueArr.indexOf(state.currentCard.value)-1]
+                state.placeHoldersReq[suitIndex] = valueArr[valueArr.indexOf(state.currentCard.value)]
             }
             
             if (state.currentCard.isField) {

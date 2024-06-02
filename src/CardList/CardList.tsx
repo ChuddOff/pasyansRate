@@ -1,7 +1,7 @@
 import {CardItem} from "../CardItem/CardItem";
 import { PlaceHolder } from "../CardItem/CardItem";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import './CardList.scss'
 import { apiCards } from "../store/reducers/CardsServices";
@@ -24,6 +24,14 @@ interface CardListProps {
 // }
  
 const CardList: React.FC<CardListProps> = () => {
+
+    let bottomRange = 90;
+
+    if (window.innerWidth <= 1023) {
+        bottomRange = 68;
+    }
+
+
     const dispatch = useAppDispatch();
 
     const [success, setSuccess] = useState(false)
@@ -58,7 +66,7 @@ const CardList: React.FC<CardListProps> = () => {
 
                     let bottom: number = 0;
                     if (cardIndex) {
-                        bottom = 90*cardIndex;
+                        bottom = bottomRange*cardIndex;
                     }
 
                         return <CardItem 

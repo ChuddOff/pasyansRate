@@ -67,3 +67,50 @@
         height: 130px;
     }
 }
+
+$tablet: 1023px;
+$mobile: 767px;
+$mobile-s: 480px;
+
+
+@media (max-width: $tablet) {
+    .card {
+        width: 70px;
+        height: 100px;
+
+        img {
+                width: 57px;
+                height: 62px;
+        }
+    
+        &_detail {
+    
+            h4 {
+                font-size:28px;
+            }
+            img {
+                width: 23px;
+                height: 23px;
+            }
+        }
+
+        .fakecard {
+            width: 70px;
+            height: 100px;  
+        }
+    }
+
+    
+}
+
+@media (max-width: $mobile) {
+    .card {
+        width: 8.7vw;
+
+        .fakecard {
+            width: 8.7vw;
+        }
+    }
+
+    
+}

@@ -54,6 +54,10 @@ export const CardItem: React.FC<CardItemProps> = ({suit, value, code, bottom=0, 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        console.log(isPlace);
+        console.log(value);
+        
+
         dispatch(updateCards({
             suit: suit,
             value: value,
@@ -93,7 +97,13 @@ export const CardItem: React.FC<CardItemProps> = ({suit, value, code, bottom=0, 
 const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, columnIndex, cardIndex, isOther, isPlace, isField}) => {
 
     const dispatch = useAppDispatch();
-    const {placeHoldersReq, columns, cards, cardsOpened, isDrag} = useAppSelector(state => state.columns)
+    const {currentCard, placeHoldersReq, columns, cards, cardsOpened, isDrag} = useAppSelector(state => state.columns)
+
+    let bottomRange = 130;
+
+    if (window.innerWidth <= 1023) {
+        bottomRange = 100;
+    }
 
     useEffect(() => {
         if (!cardsOpened.includes(code)) {
@@ -156,20 +166,26 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
             let unFound: boolean = true;
             const suits = ['HEARTS', 'DIAMONDS', 'CLUBS', 'SPADES']
 
-            dispatch(setCurrentCard(getCardByCode(code)));
+            console.log(code);
+            
 
-            for (let i = 0; i<placeHoldersReq.length; i++) {
-                if ((getCardByCode(code).value === placeHoldersReq[i]) && (suits[i] === getCardByCode(code).suit)) {
-                    // dispatch(addCard(getCardByCode(column.slice(-1)[0]).code))
-                    dispatch(addPlaceCard(i))
-                    dispatch(upPlaceHolderReq(i))
-                    dispatch(deleteCard())
-                    unFound = false
-                    break
+            dispatch(setCurrentCard(getCardByCode(code)));
+            
+            if (!getCardByCode(code).isPlace) {
+                for (let i = 0; i<placeHoldersReq.length; i++) {
+                    if ((getCardByCode(code).value === placeHoldersReq[i]) && (suits[i] === getCardByCode(code).suit)) {
+                        // dispatch(addCard(getCardByCode(column.slice(-1)[0]).code))
+                        dispatch(addPlaceCard(i))
+                        dispatch(upPlaceHolderReq(i))
+                        dispatch(deleteCard())
+                        unFound = false
+                        break
+                    }
                 }
             }
-
-            if (unFound) {
+            
+            if (unFound && !getCardByCode(code).isField) {
+                
                 for (let i = 0; i<columns.length; i++) {
                     if (!columns[i].slice(-1)[0] && getCardByCode(code).value==='KING') {
                         dispatch(addKingCard(i))
@@ -178,6 +194,8 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
                     }
         
                     if (checkValue(getCardByCode(columns[i].slice(-1)[0] ?? 'AH').value, getCardByCode(code).value) && checkSuit(getCardByCode(columns[i].slice(-1)[0]).suit, getCardByCode(code).suit)) {
+                        console.log(currentCard);
+                        
                         dispatch(addCard(getCardByCode(columns[i].slice(-1)[0]).code))
                         dispatch(deleteCard())
                         break
@@ -205,7 +223,7 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
 
             {show && isDrag && !isDragging ?
             <PlaceHolder
-            bottom={(bottom ?? 0)+130} 
+            bottom={(bottom ?? 0)+bottomRange} 
             code={code} 
             isForKing = {false} /> 
              : null}
