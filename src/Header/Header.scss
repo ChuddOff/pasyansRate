@@ -4,6 +4,10 @@
     display: flex;
     justify-content: center;
     user-select: none;
+    
+    .box {
+        background-color: #313131;
+    }
 
     &_stats {
         display: flex;
@@ -19,11 +23,12 @@
         h3 {
             margin: 0;
             padding: 0;
-            width: 73px;
+            width: 80px;
         }
     }
 
     &_profile {
+        width: 141px;
         display: flex;
         align-items: center;
         gap: 5px;

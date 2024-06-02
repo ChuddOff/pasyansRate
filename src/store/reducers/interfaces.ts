@@ -15,3 +15,15 @@ export interface DeckResponse {
     shuffled: boolean;
     cards: Card[];
   }
+
+export interface currentCard {
+  suit: string;
+  value: string;
+  code: string;
+  bottom: number;
+  columnIndex: number;
+  cardIndex: number;
+  isOther: boolean;
+  isPlace: boolean;
+  isField: boolean
+}

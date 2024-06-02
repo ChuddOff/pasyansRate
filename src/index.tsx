@@ -4,11 +4,26 @@ import './index.css';
 import App from './App/App';
 import {setupStore} from './store/store';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from '@emotion/react';
+import { createTheme } from '@mui/material/styles';
+import { css, Global } from '@emotion/react';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
 
 const store = setupStore();
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      light: '#ffffff',
+      main: '#ffffff',
+      dark: '#ffffff',
+      contrastText: '#ffffff',
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +31,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
+    <ThemeProvider theme={darkTheme}>
       <App />
+      </ThemeProvider>
     </QueryClientProvider>
   </Provider>
 );

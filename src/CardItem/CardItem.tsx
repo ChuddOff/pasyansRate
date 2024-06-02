@@ -1,9 +1,10 @@
 import { ConnectDropTarget, useDrag, useDrop } from 'react-dnd';
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { addOpenedCard, setDragging, relocateCard } from "../store/reducers/ColumnsSlice";
+import { addOpenedCard, setDragging, setCurrentCard, updateCards, deleteCard, addCard, addKingCard, addPlaceCard, upPlaceHolderReq } from "../store/reducers/ColumnsSlice";
 import { useEffect } from 'react';
 import './CardItem.scss'
-
+import { AddCard } from '@mui/icons-material';
+import { currentCard } from '../store/reducers/interfaces';
 
 
 interface CardItemProps {
@@ -15,21 +16,20 @@ interface CardItemProps {
     columnIndex?: number;
     cardIndex?: number;
     isOther?: boolean;
+    isPlace?: boolean;
+    isField?: boolean;
 }
 
 interface CardFakeProps {
     bottom: number;
 }
 interface DroppedItem {
-    code: string;
-    card: number;
-    column: number;
+    columnIndex: number;
 }
 interface PlaceHolder {
+    index?: number;
     bottom: number;
-    suit: string;
-    code: string;
-    columnIndex: number;
+    code?: string;
     isForKing: boolean;
 }
 
@@ -48,14 +48,30 @@ const getIcon = (suit: string, value: string) => {
     } 
 }
  
-export const CardItem: React.FC<CardItemProps> = ({suit, value, code, bottom=0, show=false, columnIndex = 0, cardIndex = 0, isOther=false}) => {
-
+export const CardItem: React.FC<CardItemProps> = ({suit, value, code, bottom=0, show=false, columnIndex = 0, cardIndex = 0, isOther=false, isPlace=false, isField=false}) => {
     
     const {cardsOpened} = useAppSelector(state => state.columns)
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(updateCards({
+            suit: suit,
+            value: value,
+            code: code,
+            bottom: bottom ?? 0,
+            columnIndex: columnIndex ?? 0,
+            cardIndex: cardIndex ?? 0,
+            isOther: isOther ?? false,
+            isPlace: isPlace ?? false,
+            isField: isField ?? false
+        }))
+    }, [])
+
+    
 
     return ( 
         <>
-            {isOther || show || cardsOpened.includes(code) ?
+            {show || cardsOpened.includes(code) || isPlace || isOther ?
             <CardReal 
             suit={suit} 
             value={value} 
@@ -63,17 +79,21 @@ export const CardItem: React.FC<CardItemProps> = ({suit, value, code, bottom=0, 
             bottom={bottom} 
             show={show} 
             columnIndex={columnIndex}
-            cardIndex={cardIndex} />
+            cardIndex={cardIndex}
+            isOther={isOther}
+            isPlace={isPlace}
+            isField={isField}
+             />
             :
             <CardFake bottom={bottom}/>}
         </>
      );
 }
 
-const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, columnIndex, cardIndex}) => {
+const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, columnIndex, cardIndex, isOther, isPlace, isField}) => {
 
     const dispatch = useAppDispatch();
-    const {cardsOpened, isDrag} = useAppSelector(state => state.columns)
+    const {placeHoldersReq, columns, cards, cardsOpened, isDrag} = useAppSelector(state => state.columns)
 
     useEffect(() => {
         if (!cardsOpened.includes(code)) {
@@ -84,9 +104,7 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
     const [{ isDragging }, drag] = useDrag({
         type: 'card',
         item: { 
-            code: code,
-            column: columnIndex,
-            card: cardIndex
+            columnIndex: columnIndex
          },
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
@@ -95,12 +113,84 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
 
     useEffect(() => {
         dispatch(setDragging(isDragging))
+
+        if (isDragging) {
+            dispatch(setCurrentCard({
+                suit: suit,
+                value: value,
+                code: code,
+                bottom: bottom ?? 0,
+                columnIndex: columnIndex ?? 0,
+                cardIndex: cardIndex ?? 0,
+                isOther: isOther ?? false,
+                isPlace: isPlace ?? false,
+                isField: isField ?? false
+            }))
+        }
     }, [isDragging])
     
+    const getCardByCode = (code: string): currentCard => {
+        return cards[cards.map(item => item.code).indexOf(code)]
+    }
+
+    const checkValue = (valueOld: string, valueNew: string) => {
+        const valueArr = ['ACE', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING']
+
+        return valueArr.indexOf(valueOld) === valueArr.indexOf(valueNew)+1
+    }
+
+    const checkSuit = (suitOld: string, suitNew: string) => {
+        let isRightSuit: boolean = false;
+
+        if ((suitOld === 'DIAMONDS' || suitOld === 'HEARTS') && (suitNew === 'CLUBS' || suitNew === 'SPADES')) {
+            isRightSuit = true
+        }
+        if ((suitNew === 'DIAMONDS' || suitNew === 'HEARTS') && (suitOld === 'CLUBS' || suitOld === 'SPADES')) {
+            isRightSuit = true
+        }
+        return isRightSuit;
+    }
+
+    const autoSelect = (code: string) => {
+        if (!getCardByCode(code).isField){
+            let unFound: boolean = true;
+            const suits = ['HEARTS', 'DIAMONDS', 'CLUBS', 'SPADES']
+
+            dispatch(setCurrentCard(getCardByCode(code)));
+
+            for (let i = 0; i<placeHoldersReq.length; i++) {
+                if ((getCardByCode(code).value === placeHoldersReq[i]) && (suits[i] === getCardByCode(code).suit)) {
+                    // dispatch(addCard(getCardByCode(column.slice(-1)[0]).code))
+                    dispatch(addPlaceCard(i))
+                    dispatch(upPlaceHolderReq(i))
+                    dispatch(deleteCard())
+                    unFound = false
+                    break
+                }
+            }
+
+            if (unFound) {
+                for (let i = 0; i<columns.length; i++) {
+                    if (!columns[i].slice(-1)[0] && getCardByCode(code).value==='KING') {
+                        dispatch(addKingCard(i))
+                        dispatch(deleteCard())
+                        break
+                    }
+        
+                    if (checkValue(getCardByCode(columns[i].slice(-1)[0] ?? 'AH').value, getCardByCode(code).value) && checkSuit(getCardByCode(columns[i].slice(-1)[0]).suit, getCardByCode(code).suit)) {
+                        dispatch(addCard(getCardByCode(columns[i].slice(-1)[0]).code))
+                        dispatch(deleteCard())
+                        break
+                    }
+                } 
+            }
+        }
+    }
 
     return ( 
         <>
             <div 
+            onClick={() => {autoSelect(code)}}
             ref={drag}
             className='card' 
             // draggable={true}
@@ -114,76 +204,57 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
             </div>
 
             {show && isDrag && !isDragging ?
-            <PlaceHolder 
+            <PlaceHolder
             bottom={(bottom ?? 0)+130} 
-            suit={suit} code={code} 
-            columnIndex={columnIndex ?? 0}
+            code={code} 
             isForKing = {false} /> 
              : null}
         </>
      );
 }
 
-export const PlaceHolder: React.FC<PlaceHolder> = ({bottom, suit, code, columnIndex, isForKing}) => {
+export const PlaceHolder: React.FC<PlaceHolder> = ({index = 0, bottom, code='0', isForKing}) => {
 
     const dispatch = useAppDispatch();
-    const {columns} = useAppSelector(state => state.columns)
+    const {cards, currentCard, columns} = useAppSelector(state => state.columns)
+
+    const getCardByCode = (code: string) => {
+        return cards[cards.map(item => item.code).indexOf(code)]
+    }
 
     const [ {isOver} , drop] = useDrop({
         accept: 'card',
-        drop: (item: DroppedItem) => isForKing ? isKing(item.code, item.column, item.card) : isRightCard(item.code, item.column, item.card),
+        drop: (item: DroppedItem) => isForKing ? isKing() : isRightCard(),
         collect: (monitor) => ({
             isOver: !!monitor.isOver(),
         })
     })
 
-    const valueArr = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'J', 'Q', 'K']
+    const valueArr = ['ACE', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING']
 
-    const isRightCard = (newCode: string, indexOld: number, indexCard: number) => {
-        const newSuit: string = newCode.charAt(1);
-        const oldSuit: string = suit.charAt(0);
-        const newValue: string = newCode.charAt(0);
-        const oldValue: string = code.charAt(0);
+    const isRightCard = () => {
 
         let isRightSuit: boolean = false;
 
-        if (newSuit === 'D' || newSuit === 'H' && oldSuit === 'C' || oldSuit === 'S') {
+        if ((currentCard.suit === 'DIAMONDS' || currentCard.suit === 'HEARTS') && (getCardByCode(code).suit === 'CLUBS' || getCardByCode(code).suit === 'SPADES')) {
             isRightSuit = true
         }
-        if (oldSuit === 'D' || oldSuit === 'H' && newSuit === 'C' || newSuit === 'S') {
+        if ((getCardByCode(code).suit === 'DIAMONDS' || getCardByCode(code).suit === 'HEARTS') && (currentCard.suit === 'CLUBS' || currentCard.suit === 'SPADES')) {
             isRightSuit = true
         }
-        // console.log(valueArr.indexOf(newValue) === valueArr.indexOf(oldValue)-1 && isRightSuit);
         
-        
-        
-        
-        if (valueArr.indexOf(newValue) === valueArr.indexOf(oldValue)-1 && isRightSuit) {
-            dispatch(relocateCard({
-                indexOld: indexOld,
-                indexNew: columnIndex, 
-                indexCard: indexCard,
-                cardList: columns[indexOld].slice(indexCard)
-            }))
+        if (valueArr.indexOf(currentCard.value) === valueArr.indexOf(getCardByCode(code).value)-1 && isRightSuit) {
+            dispatch(addCard(getCardByCode(code).code))
+            dispatch(deleteCard())
         }
 
     }
 
-    const isKing = (newCode: string, indexOld: number, indexCard: number) => {
-        const newValue: string = newCode.charAt(0);
-
-        // console.log(valueArr.indexOf(newValue) === valueArr.indexOf(oldValue)-1 && isRightSuit);
+    const isKing = () => {
         
-        
-        
-        
-        if (valueArr.indexOf(newValue) === 12) {
-            dispatch(relocateCard({
-                indexOld: indexOld,
-                indexNew: columnIndex, 
-                indexCard: indexCard,
-                cardList: columns[indexOld].slice(indexCard)
-            }))
+        if (valueArr.indexOf(currentCard.value) === 12) {
+            dispatch(addKingCard(index))
+            dispatch(deleteCard())
         }
 
     }
