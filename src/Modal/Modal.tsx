@@ -1,82 +1,127 @@
+import { useRef, useCallback } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import {
+  toggleShowModal,
+  setCurrentCard,
+  deleteCard,
+  addPlaceCard,
+  upPlaceHolderReq,
+} from "../store/reducers/ColumnsSlice";
+import "./Modal.scss";
+import { currentCard } from "../store/reducers/interfaces";
+import { log } from "console";
 
+interface ModalProps {}
 
-import { useRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { toggleShowModal, setCurrentCard, deleteCard, addPlaceCard, upPlaceHolderReq } from '../store/reducers/ColumnsSlice';
-import './Modal.scss'
-import { currentCard } from '../store/reducers/interfaces';
-
-interface ModalProps {
-    
-}
- 
 const Modal: React.FC<ModalProps> = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
 
-    const ref = useRef<HTMLDivElement>(null);
-    const dispatch = useAppDispatch();
+  const { currentCard, placeHolders, cards, columns } = useAppSelector(
+    (state) => state.columns
+  );
 
-    const {placeHolders, cards, columns} = useAppSelector(state => state.columns)
+  const getCardByCode = (code: string): currentCard => {
+    return cards[cards.map((item) => item.code).indexOf(code)];
+  };
 
-    const getCardByCode = (code: string): currentCard => {
-        return cards[cards.map(item => item.code).indexOf(code)]
-    }
+  const checkValue = (valueOld: string, valueNew: string) => {
+    const valueArr = [
+      "ACE",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "JACK",
+      "QUEEN",
+      "KING",
+    ];
 
-    const checkValue = (valueOld: string, valueNew: string) => {
-        const valueArr = ['ACE', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING']
+    return valueArr.indexOf(valueNew) === valueArr.indexOf(valueOld) + 1;
+  };
 
-        return valueArr.indexOf(valueOld) === valueArr.indexOf(valueNew)+1
-    }
+//   const solve = useCallback(() => {
+//     console.log(JSON.stringify(columns, null, 2));
 
-    const endUpMatch = () => {
-        while(true) {
-            columns.forEach(item => {
-                if (item.slice(-1)[0]) {
-                    const suits = ['HEARTS', 'DIAMONDS', 'CLUBS', 'SPADES']
+//     columns.forEach((item: string[]) => {
+//       if (item.slice(-1)[0]) {
+//         console.log(item.slice(-1)[0]);
 
-                    const index: number = suits.indexOf(getCardByCode(item.slice(-1)[0]).suit)
+//         const suits = ["HEARTS", "DIAMONDS", "CLUBS", "SPADES"];
 
-                    if (checkValue(getCardByCode(placeHolders[index].slice(-1)[0]).value, getCardByCode(item.slice(-1)[0]).value)) {
-                        dispatch(setCurrentCard(getCardByCode(item.slice(-1)[0])));
-                        dispatch(addPlaceCard(index))
-                        dispatch(upPlaceHolderReq(index))
-                        dispatch(deleteCard())
-                    }
-                }
-                
-            })
-        }
-    }
+//         const index: number = suits.indexOf(
+//           getCardByCode(item.slice(-1)[0]).suit
+//         );
 
-    const closeModal = () => {
-        ref.current?.classList.add('setHide')
-        
-        setTimeout(() => {
-            dispatch(toggleShowModal())
-        }, 1000);
-        
-    }
+//         if (
+//           checkValue(
+//             getCardByCode(placeHolders[index].slice(-1)[0]).value,
+//             getCardByCode(item.slice(-1)[0]).value
+//           )
+//         ) {
+//           dispatch(setCurrentCard(getCardByCode(item.slice(-1)[0])));
+//           console.log(currentCard);
+//           dispatch(addPlaceCard(index));
+//           dispatch(upPlaceHolderReq(index));
+//           dispatch(deleteCard());
+//         }
+//       }
+//     });
+//   }, [currentCard, placeHolders, cards, columns]);
 
-    return ( 
-        <div className="modal">
-            <div ref={ref} className="dialogue setShow">
+const solve = useCallback(() => {
+    columns.forEach((item: string[]) => {
+      if (item.slice(-1)[0]) {
+        console.log(item.slice(-1)[0]);
+            console.log(currentCard);
+            dispatch(setCurrentCard(getCardByCode(item.slice(-1)[0])));
+            dispatch(deleteCard());
+      }
+    });
+  }, [currentCard, placeHolders, cards, columns]);
 
-                <div className="info">
-                    <h2>У вас получилось! <br /> Хотите доразложим колоду за вас?</h2>
-                    
-                    <div className="buttons">
-                        <button 
-                        type="button" 
-                        onClick={() => {endUpMatch()}} >Да</button>
-                        <button 
-                        type="button" 
-                        onClick={closeModal}
-                        >Нет</button>
-                    </div>
-                </div>
-            </div>
-            
+  const endUpMatch = () => {
+    setInterval(solve, 1000);
+  };
+
+  const closeModal = () => {
+    ref.current?.classList.add("setHide");
+
+    setTimeout(() => {
+      dispatch(toggleShowModal());
+    }, 1000);
+  };
+
+  return (
+    <div className="modal">
+      <div ref={ref} className="dialogue setShow">
+        <div className="info">
+          <h2>
+            У вас получилось! <br /> Хотите доразложим колоду за вас?
+          </h2>
+
+          <div className="buttons">
+            <button
+              type="button"
+              onClick={() => {
+                endUpMatch();
+              }}
+            >
+              Да
+            </button>
+            <button type="button" onClick={closeModal}>
+              Нет
+            </button>
+          </div>
         </div>
-     );
-}
- 
+      </div>
+    </div>
+  );
+};
+
 export default Modal;

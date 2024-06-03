@@ -10,8 +10,9 @@
 
         display: flex;
         max-width: 300px;
+        width: 100%;
         justify-content: space-between;
-        gap: 100px;
+        gap: 10px;
 
         .cardButton {
             width: 90px;
@@ -172,7 +173,7 @@ $mobile-s: 480px;
     .header2 {
 
         padding: 10px 10px;
-        gap: 10px;
+        gap: 80px;
 
         .givenCards {
             .cardButton {

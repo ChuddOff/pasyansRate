@@ -36,9 +36,10 @@ const Header:React.FC = () => {
     return (
         <header className='header'>
             <div className='else'>
-            <Button onClick={() => {setOpen(true)}}>
-                <MoreVertIcon/>
-            </Button>
+                <Button style={{width: 'inherit'}} onClick={() => {setOpen(true)}}>
+                    <MoreVertIcon/>
+                </Button>
+            </div>
             <Drawer open={open} className='drawer' onClose={() => {setOpen(false)}}>
                 <Box sx={{ width: 250, backgroundColor: 313131 }} role="presentation" className='box' onClick={() => {setOpen(false)}}>
                     <List>
@@ -78,7 +79,6 @@ const Header:React.FC = () => {
                     </List>
                 </Box>
             </Drawer>
-            </div>
             
             <div className='header_stats'>
                 <h3

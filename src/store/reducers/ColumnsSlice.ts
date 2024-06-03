@@ -131,10 +131,6 @@ const ColumnsSlice = createSlice({
             state.cardOtherIndex = action.payload;
 
         },
-        appendPlaceHolder: (state, action) => {
-            
-            state.placeHolders[action.payload].push(state.currentCard.code);
-        },
         deleteCard: (state) => {
             state.moves += 1
             state.isDrag = false;
@@ -194,8 +190,6 @@ const ColumnsSlice = createSlice({
 
         },
         addPlaceCard: (state, action: PayloadAction<number>) => {
-
-            console.log(state.currentCard.code);
             
             state.placeHolders[action.payload].push(state.currentCard.code)
 
@@ -220,7 +214,6 @@ export const {
     addOpenedCard,
     setDragging,
     changeOtherCard,
-    appendPlaceHolder,
     setCurrentCard,
     deleteCard,
     addCard,

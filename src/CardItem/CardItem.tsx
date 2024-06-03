@@ -1,9 +1,10 @@
 import { useDrag, useDrop } from 'react-dnd';
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { addOpenedCard, setDragging, setCurrentCard, updateCards, deleteCard, addCard, addKingCard, addPlaceCard, upPlaceHolderReq } from "../store/reducers/ColumnsSlice";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './CardItem.scss'
 import { currentCard } from '../store/reducers/interfaces';
+import { useSwipeable } from 'react-swipeable';
 
 
 interface CardItemProps {
@@ -95,6 +96,8 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
     const dispatch = useAppDispatch();
     const {currentCard, placeHoldersReq, columns, cards, cardsOpened, isDrag} = useAppSelector(state => state.columns)
 
+
+
     let bottomRange = 130;
 
     if (window.innerWidth <= 1023) {
@@ -104,11 +107,15 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
         bottomRange = 60;
     }
 
+
+
     useEffect(() => {
         if (!cardsOpened.includes(code)) {
             dispatch(addOpenedCard(code))
         }
     }, [suit, value, code, bottom, show, columnIndex, cardIndex, isOther, isPlace, isField])
+
+
 
     const [{ isDragging }, drag] = useDrag({
         type: 'card',
@@ -119,6 +126,13 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
             isDragging: !!monitor.isDragging(),
         })
     })
+
+
+
+    const [positionX, setPositionX] = useState(0);
+    const [positionY, setPositionY] = useState(0);
+
+
 
     useEffect(() => {
         dispatch(setDragging(isDragging))
@@ -165,15 +179,13 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
             let unFound: boolean = true;
             const suits = ['HEARTS', 'DIAMONDS', 'CLUBS', 'SPADES']
 
-            console.log(code);
-            
-
             dispatch(setCurrentCard(getCardByCode(code)));
             
             if (!getCardByCode(code).isPlace) {
                 for (let i = 0; i<placeHoldersReq.length; i++) {
                     if ((getCardByCode(code).value === placeHoldersReq[i]) && (suits[i] === getCardByCode(code).suit)) {
                         // dispatch(addCard(getCardByCode(column.slice(-1)[0]).code))
+
                         dispatch(addPlaceCard(i))
                         dispatch(upPlaceHolderReq(i))
                         dispatch(deleteCard())
@@ -193,7 +205,6 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
                     }
         
                     if (checkValue(getCardByCode(columns[i].slice(-1)[0] ?? 'AH').value, getCardByCode(code).value) && checkSuit(getCardByCode(columns[i].slice(-1)[0]).suit, getCardByCode(code).suit)) {
-                        console.log(currentCard);
                         
                         dispatch(addCard(getCardByCode(columns[i].slice(-1)[0]).code))
                         dispatch(deleteCard())
@@ -211,7 +222,10 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
             ref={drag}
             className='card' 
             // draggable={true}
-            style={{bottom: `${bottom}px`}}>
+            style={{
+                bottom: `${bottom}px`,
+                transform: `translate(${positionX}px, ${positionY}px)`,
+                }}>
                 <div className='card_detail'
                 >
                     <h4>{value==='10' ? value : value.charAt(0)}</h4>
