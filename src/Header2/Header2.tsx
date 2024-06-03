@@ -1,15 +1,10 @@
 import { CardItem } from '../CardItem/CardItem';
-import { appendPlaceHolder, deleteCard, changeOtherCard, addCard, addPlaceCard, upPlaceHolderReq } from "../store/reducers/ColumnsSlice";
+import { deleteCard, changeOtherCard, addPlaceCard, upPlaceHolderReq } from "../store/reducers/ColumnsSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { ConnectDropTarget, useDrag, useDrop } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 import './Header2.scss'
 import '../CardItem/CardItem.scss'
 
-interface DroppedItem {
-    code: string;
-    card: number;
-    column: number;
-}
  
 const Header2: React.FC = () => {
 
@@ -22,19 +17,19 @@ const Header2: React.FC = () => {
 
     const [ , drop0] = useDrop({
         accept: 'card',
-        drop: (item: DroppedItem) => placeCard(0, 'HEARTS')
+        drop: () => placeCard(0, 'HEARTS')
     })
     const [ , drop1] = useDrop({
         accept: 'card',
-        drop: (item: DroppedItem) => placeCard(1, 'DIAMONDS')
+        drop: () => placeCard(1, 'DIAMONDS')
     })
     const [ , drop2] = useDrop({
         accept: 'card',
-        drop: (item: DroppedItem) => placeCard(2, 'CLUBS')
+        drop: () => placeCard(2, 'CLUBS')
     })
     const [ , drop3] = useDrop({
         accept: 'card',
-        drop: (item: DroppedItem) => placeCard(3, 'SPADES')
+        drop: () => placeCard(3, 'SPADES')
     })
 
     const placeCard = (NumberSuit: number, suit: string) => {
@@ -76,7 +71,7 @@ const Header2: React.FC = () => {
             </div>
             <div className="cardState">
                 <div className="cardholder" ref={drop0}>
-                    {placeHolders[0].length==0 ? 
+                    {placeHolders[0].length===0 ? 
                     <img src="HEARTS_PLACE.png" alt="HEARTS" /> :
                     <CardItem 
                     suit={getCardByCode(placeHolders[0].slice(-1)[0]).suit} 
@@ -86,7 +81,7 @@ const Header2: React.FC = () => {
                 </div>
   
                 <div className="cardholder" ref={drop1}>
-                    {placeHolders[1].length==0 ? 
+                    {placeHolders[1].length===0 ? 
                         <img src="DIAMONDS_PLACE.png" alt="DIAMONDS" /> :
                         <CardItem 
                         suit={getCardByCode(placeHolders[1].slice(-1)[0]).suit} 
@@ -96,7 +91,7 @@ const Header2: React.FC = () => {
                 </div>
 
                 <div className="cardholder" ref={drop2}>
-                    {placeHolders[2].length==0 ? 
+                    {placeHolders[2].length===0 ? 
                         <img src="CLUBS_PLACE.png" alt="CLUBS" /> :
                         <CardItem 
                         suit={getCardByCode(placeHolders[2].slice(-1)[0]).suit} 
@@ -106,7 +101,7 @@ const Header2: React.FC = () => {
                 </div>
 
                 <div className="cardholder" ref={drop3}>
-                    {placeHolders[3].length==0 ? 
+                    {placeHolders[3].length===0 ? 
                         <img src="SPADES_PLACE.png" alt="SPADES" /> :
                         <CardItem 
                         suit={getCardByCode(placeHolders[3].slice(-1)[0]).suit} 

@@ -1,9 +1,8 @@
-import { ConnectDropTarget, useDrag, useDrop } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { addOpenedCard, setDragging, setCurrentCard, updateCards, deleteCard, addCard, addKingCard, addPlaceCard, upPlaceHolderReq } from "../store/reducers/ColumnsSlice";
 import { useEffect } from 'react';
 import './CardItem.scss'
-import { AddCard } from '@mui/icons-material';
 import { currentCard } from '../store/reducers/interfaces';
 
 
@@ -34,13 +33,13 @@ interface PlaceHolder {
 }
 
 const getIcon = (suit: string, value: string) => {
-    if (value == "JACK") {
+    if (value === "JACK") {
         return `V${suit === "HEARTS" || suit === "DIAMONDS" ? "R" : "B"}.png`
     }
-    else if (value == "QUEEN") {
+    else if (value === "QUEEN") {
         return `D${suit === "HEARTS" || suit === "DIAMONDS" ? "R" : "B"}.png`
     }
-    else if (value == "KING") {
+    else if (value === "KING") {
         return `K${suit === "HEARTS" || suit === "DIAMONDS" ? "R" : "B"}.png`
     }
     else {
@@ -54,9 +53,6 @@ export const CardItem: React.FC<CardItemProps> = ({suit, value, code, bottom=0, 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        console.log(isPlace);
-        console.log(value);
-        
 
         dispatch(updateCards({
             suit: suit,
@@ -69,7 +65,7 @@ export const CardItem: React.FC<CardItemProps> = ({suit, value, code, bottom=0, 
             isPlace: isPlace ?? false,
             isField: isField ?? false
         }))
-    }, [])
+    }, [suit, value, code, bottom, show, columnIndex, cardIndex, isOther, isPlace, isField])
 
     
 
@@ -104,12 +100,15 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
     if (window.innerWidth <= 1023) {
         bottomRange = 100;
     }
+    if (window.innerWidth <= 767) {
+        bottomRange = 60;
+    }
 
     useEffect(() => {
         if (!cardsOpened.includes(code)) {
             dispatch(addOpenedCard(code))
         }
-    }, [])
+    }, [suit, value, code, bottom, show, columnIndex, cardIndex, isOther, isPlace, isField])
 
     const [{ isDragging }, drag] = useDrag({
         type: 'card',
@@ -215,7 +214,7 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
             style={{bottom: `${bottom}px`}}>
                 <div className='card_detail'
                 >
-                    <h4>{value=='10' ? value : value.charAt(0)}</h4>
+                    <h4>{value==='10' ? value : value.charAt(0)}</h4>
                     <img src={`${suit}.png`} alt="" />
                 </div>
                 <img src={getIcon(suit, value)} alt="" />
@@ -234,7 +233,7 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
 export const PlaceHolder: React.FC<PlaceHolder> = ({index = 0, bottom, code='0', isForKing}) => {
 
     const dispatch = useAppDispatch();
-    const {cards, currentCard, columns} = useAppSelector(state => state.columns)
+    const {cards, currentCard} = useAppSelector(state => state.columns)
 
     const getCardByCode = (code: string) => {
         return cards[cards.map(item => item.code).indexOf(code)]

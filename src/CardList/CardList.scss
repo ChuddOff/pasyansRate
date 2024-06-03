@@ -6,3 +6,22 @@
     justify-content: space-between;
 
 }
+
+$tablet: 1023px;
+$mobile: 767px;
+$mobile-s: 480px;
+
+@media (max-width: $tablet) {
+    .cardlist {
+        padding: 30px 30px;
+        gap: 0px;
+    }
+
+}
+@media (max-width: $mobile-s) {
+    .cardlist {
+        padding: 20px 10px;
+        gap: 0px;
+    }
+
+}

@@ -1,7 +1,5 @@
-import { PayloadAction, createSlice, current } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Card, currentCard } from "./interfaces";
-import produce from 'immer';
-import { it } from "node:test";
 
 interface UserState {
     cards: currentCard[];
@@ -16,12 +14,6 @@ interface UserState {
     currentCard: currentCard;
     showModal: boolean;
     // [key: string]: Card[] | undefined;
-}
-interface DroppedRelocate {
-    indexOld: number;
-    indexNew: number;
-    indexCard: number;
-    cardList: Card[];
 }
 interface CardsOther {
     suit: string;
@@ -90,6 +82,7 @@ const ColumnsSlice = createSlice({
                     isPlace: false,
                     isField: false
                 })
+                state.cardsOpened.push(item.code)
             })
 
             action.payload.forEach(item => {
@@ -144,6 +137,7 @@ const ColumnsSlice = createSlice({
         },
         deleteCard: (state) => {
             state.moves += 1
+            state.isDrag = false;
             if (state.currentCard.isOther) {
                 state.cardsOther.splice(state.cardsOther.map(item => item.code).indexOf(state.currentCard.code), 1);
                 state.cardOtherIndex -= 1;
@@ -161,7 +155,7 @@ const ColumnsSlice = createSlice({
             
             if (state.currentCard.isField) {
                 
-                state.columns[state.currentCard.columnIndex].splice(state.currentCard.cardIndex, 10)
+                state.columns[state.currentCard.columnIndex].splice(state.currentCard.cardIndex)
             }
         },
         addCard: (state, action: PayloadAction<string>) => {

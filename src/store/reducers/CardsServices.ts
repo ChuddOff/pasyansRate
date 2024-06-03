@@ -9,4 +9,4 @@ export const apiCards = createApi({
             query: () => '/deck/new/draw/?count=52'
         })
     })
-})
+}) 

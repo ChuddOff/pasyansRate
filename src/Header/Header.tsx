@@ -25,7 +25,7 @@ const Header:React.FC = () => {
     const [open, setOpen] = useState(false);
     const { seconds, minutes, start, pause, reset } = useStopwatch({ autoStart: true });
     
-    const list = ['Home', 'Easy', , 'Profile', 'Stats'];
+    const list = ['Home', 'Easy', 'Profile', 'Stats'];
 
     useEffect(() => {
         start()
@@ -35,7 +35,8 @@ const Header:React.FC = () => {
 
     return (
         <header className='header'>
-            <Button style={{width: '141px'}} onClick={() => {setOpen(true)}}>
+            <div className='else'>
+            <Button onClick={() => {setOpen(true)}}>
                 <MoreVertIcon/>
             </Button>
             <Drawer open={open} className='drawer' onClose={() => {setOpen(false)}}>
@@ -77,14 +78,16 @@ const Header:React.FC = () => {
                     </List>
                 </Box>
             </Drawer>
+            </div>
+            
             <div className='header_stats'>
                 <h3
                 style={{alignItems: 'right'}}
-                >{minutes.toString().padStart(2,'0')}:{seconds.toString().padStart(2,'0')}</h3>
+                >Moves {moves}</h3>
                 <h1>PASYANS COMPETITIVE</h1>
                 <h3
                 style={{alignItems: 'left'}}
-                >Moves {moves}</h3>
+                >{minutes.toString().padStart(2,'0')}:{seconds.toString().padStart(2,'0')}</h3>
             </div>
             <div className='header_profile'>
                 <img src="BUBY.png" alt="" />

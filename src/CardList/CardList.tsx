@@ -1,42 +1,38 @@
 import {CardItem} from "../CardItem/CardItem";
 import { PlaceHolder } from "../CardItem/CardItem";
-import axios from "axios";
 import { useState } from "react";
 
 import './CardList.scss'
 import { apiCards } from "../store/reducers/CardsServices";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { addOpenedCard, setColumns } from "../store/reducers/ColumnsSlice";
-import { Card } from "../store/reducers/interfaces";
-import { DropResult } from 'react-beautiful-dnd';
-import { Provider } from "react-redux";
-import { log } from "util";
+import { setColumns, toggleShowModal } from "../store/reducers/ColumnsSlice";
 import Modal from '../Modal/Modal';
   
 
 interface CardListProps {
     
 }
-
-// const getCards = async (): Promise<DeckResponse> => {
-//     const cards = await axios.get('https://deckofcardsapi.com/api/deck/new/draw/?count=52');
-//     return cards.data;
-// }
  
 const CardList: React.FC<CardListProps> = () => {
 
+
+    
     let bottomRange = 90;
 
     if (window.innerWidth <= 1023) {
         bottomRange = 68;
     }
+    if (window.innerWidth <= 767) {
+        bottomRange = 38;
+    }
 
 
     const dispatch = useAppDispatch();
 
-    const [success, setSuccess] = useState(false)
-    
-    const {showModal, cards, columns} = useAppSelector(state => state.columns)
+    const [ success, setSuccess] = useState(false)
+    const [ end, setEnd] = useState(false)
+
+    const {cardsOther, cardsOpened, showModal, cards, columns} = useAppSelector(state => state.columns)
     
     const getCardByCode = (code: string) => {
         return cards[cards.map(item => item.code).indexOf(code)]
@@ -55,6 +51,13 @@ const CardList: React.FC<CardListProps> = () => {
         setSuccess(true)
     }
     
+    if (!end && cardsOpened.length === 52 && cardsOther.length === 0) {
+        setEnd(true)
+        setTimeout(() => {
+            dispatch(toggleShowModal())
+        }, 100);
+        
+    }
 
     return (  
         <div>
