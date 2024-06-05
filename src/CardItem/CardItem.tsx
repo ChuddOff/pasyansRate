@@ -35,16 +35,16 @@ interface PlaceHolder {
 
 const getIcon = (suit: string, value: string) => {
     if (value === "JACK") {
-        return `V${suit === "HEARTS" || suit === "DIAMONDS" ? "R" : "B"}.png`
+        return `/V${suit === "HEARTS" || suit === "DIAMONDS" ? "R" : "B"}.png`
     }
     else if (value === "QUEEN") {
-        return `D${suit === "HEARTS" || suit === "DIAMONDS" ? "R" : "B"}.png`
+        return `/D${suit === "HEARTS" || suit === "DIAMONDS" ? "R" : "B"}.png`
     }
     else if (value === "KING") {
-        return `K${suit === "HEARTS" || suit === "DIAMONDS" ? "R" : "B"}.png`
+        return `/K${suit === "HEARTS" || suit === "DIAMONDS" ? "R" : "B"}.png`
     }
     else {
-        return `${suit}.png`
+        return `/${suit}.png`
     } 
 }
  
@@ -229,7 +229,7 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
                 <div className='card_detail'
                 >
                     <h4>{value==='10' ? value : value.charAt(0)}</h4>
-                    <img src={`${suit}.png`} alt="" />
+                    <img src={`/${suit}.png`} alt="" />
                 </div>
                 <img src={getIcon(suit, value)} alt="" />
             </div>
@@ -308,7 +308,7 @@ const CardFake: React.FC<CardFakeProps> = ({bottom}) => {
         <div 
         className='card' 
         style={{bottom: `${bottom}px`}}>
-            <img src="CARD.png" alt="" className='fakecard' />
+            <img src="/CARD.png" alt="" className='fakecard' />
         </div>
      );
 }

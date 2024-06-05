@@ -1,0 +1,78 @@
+.choose {
+    h1 {
+        text-shadow: 0px 3px 1px rgb(0, 0, 0);
+        // text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 50px;
+    }
+}
+
+.game {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 100px;
+
+    &_easy {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        transition: 0.5s;
+        width: 400px;
+        height: 300px;
+        background-color: rgb(43, 123, 59);
+        border-radius: 30px;
+        box-shadow: 0px 0px 5px rgb(43, 123, 59);
+
+        h2 {
+            text-shadow: 1px 1px 2px rgb(0, 0, 0);
+            font-weight: 700;
+        }
+        h3 {
+            text-shadow: 1px 1px 2px rgb(0, 0, 0);
+            font-weight: 700;
+            width: 300px;
+            margin: 5px;
+        }
+        img {
+            width: 400px;
+        }
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    &_hard {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        transition: 0.5s;
+        width: 400px;
+        height: 300px;
+        background-color: rgb(43, 123, 59);
+        border-radius: 30px;
+        box-shadow: 0px 0px 5px rgb(43, 123, 59);
+
+        h2 {
+            text-shadow: 1px 1px 2px rgb(0, 0, 0);
+            font-weight: 700;
+        }
+
+        h3 {
+            text-shadow: 1px 1px 2px rgb(0, 0, 0);
+            font-weight: 700;
+            width: 300px;
+            margin: 5px;
+        }
+
+        img {
+            width: 400px;
+        }
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+}

@@ -5,10 +5,29 @@ import { useDrop } from 'react-dnd';
 import './Header2.scss'
 import '../CardItem/CardItem.scss'
 import { transform } from 'typescript';
-import { HtmlHTMLAttributes, useRef, useState } from 'react';
+import { HtmlHTMLAttributes, useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 
  
 const Header2: React.FC = () => {
+
+    const {easyHard} = useParams();
+    const navigate =  useNavigate();
+
+    let easHard: number;
+    
+    useEffect(() => {
+        
+        if (easyHard === 'easy') {
+            easHard = 1
+        }
+        else if (easyHard === 'hard') {
+            easHard = 3
+        }
+        else {
+            navigate('/games')
+        }
+    }, [easyHard])
 
     let gapRange = 50;
 
@@ -26,7 +45,7 @@ const Header2: React.FC = () => {
         return cards[cards.map(item => item.code).indexOf(code)]
     }
 
-    const easHard = 3;
+    
 
     const [ , drop0] = useDrop({
         accept: 'card',
@@ -92,9 +111,9 @@ const Header2: React.FC = () => {
                 }} >
                 { cardsOther.length === cardOtherIndex+1 ?
                     <div>
-                    <img  className='cardButton' src="REPLACE.png" alt="" />
+                    <img  className='cardButton' src="/REPLACE.png" alt="" />
                     </div> :
-                    <img className='cardButton' src="CARD.png" alt="" />
+                    <img className='cardButton' src="/CARD.png" alt="" />
                 }
                 
                 </div>
@@ -158,7 +177,7 @@ const Header2: React.FC = () => {
             <div className="cardState">
                 <div className="cardholder" ref={drop0}>
                     {placeHolders[0].length===0 ? 
-                    <img src="HEARTS_PLACE.png" alt="HEARTS" /> :
+                    <img src="/HEARTS_PLACE.png" alt="HEARTS" /> :
                     <CardItem 
                     suit={getCardByCode(placeHolders[0].slice(-1)[0]).suit} 
                     value={getCardByCode(placeHolders[0].slice(-1)[0]).value} 
@@ -168,7 +187,7 @@ const Header2: React.FC = () => {
   
                 <div className="cardholder" ref={drop1}>
                     {placeHolders[1].length===0 ? 
-                        <img src="DIAMONDS_PLACE.png" alt="DIAMONDS" /> :
+                        <img src="/DIAMONDS_PLACE.png" alt="DIAMONDS" /> :
                         <CardItem 
                         suit={getCardByCode(placeHolders[1].slice(-1)[0]).suit} 
                         value={getCardByCode(placeHolders[1].slice(-1)[0]).value} 
@@ -178,7 +197,7 @@ const Header2: React.FC = () => {
 
                 <div className="cardholder" ref={drop2}>
                     {placeHolders[2].length===0 ? 
-                        <img src="CLUBS_PLACE.png" alt="CLUBS" /> :
+                        <img src="/CLUBS_PLACE.png" alt="CLUBS" /> :
                         <CardItem 
                         suit={getCardByCode(placeHolders[2].slice(-1)[0]).suit} 
                         value={getCardByCode(placeHolders[2].slice(-1)[0]).value} 
@@ -188,7 +207,7 @@ const Header2: React.FC = () => {
 
                 <div className="cardholder" ref={drop3}>
                     {placeHolders[3].length===0 ? 
-                        <img src="SPADES_PLACE.png" alt="SPADES" /> :
+                        <img src="/SPADES_PLACE.png" alt="SPADES" /> :
                         <CardItem 
                         suit={getCardByCode(placeHolders[3].slice(-1)[0]).suit} 
                         value={getCardByCode(placeHolders[3].slice(-1)[0]).value} 

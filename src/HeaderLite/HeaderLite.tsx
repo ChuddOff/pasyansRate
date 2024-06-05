@@ -1,4 +1,3 @@
-import { useStopwatch } from 'react-timer-hook';
 import { useState, useEffect } from 'react';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -14,54 +13,24 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import CachedIcon from '@mui/icons-material/Cached';
 import { useNavigate } from "react-router-dom";
 import './Header.scss'
-import { setRestart } from '../store/reducers/ColumnsSlice';
  
-const Header:React.FC = () => {
-    const navigate =  useNavigate();
-    const {restart, moves} = useAppSelector(state => state.columns)
-
-    const dispatch = useAppDispatch();
-
+const HeaderLite:React.FC = () => {
     const [open, setOpen] = useState(false);
-    const { seconds, minutes, start, pause, reset } = useStopwatch({ autoStart: true });
-    
-    const list = ['Home', 'Easy', 'Profile', 'Stats'];
-
-    useEffect(() => {
-        start()
-    }, [start])
-
-    const getNewCards = async () => {
-        dispatch(setRestart(true))
-        
-    }
-
-    useEffect(() => {
-        if (restart) {
-            reset()
-        }
-        
-    }, [restart])
-
+    const navigate =  useNavigate();
     return (
         <header className='header'>
             <div className='else'>
-                <Button sx={{ width: '50px',  padding: '0' }} onClick={() => {setOpen(true)}}>
+                <Button sx={{ width: '100%',  padding: '0' }} onClick={() => {setOpen(true)}}>
                     <MoreVertIcon/>
-                </Button>
-                <Button sx={{ width: '50px',  padding: '0' }} onClick={() => {getNewCards()}}>
-                    <CachedIcon/>
                 </Button>
             </div>
             <Drawer open={open} className='drawer' onClose={() => {setOpen(false)}}>
                 <Box sx={{ width: 250, backgroundColor: 313131 }} role="presentation" className='box' onClick={() => {setOpen(false)}}>
                     <List>
-                        <ListItemButton key={0} onClick={() => {navigate('/games')}}>
-                            <ListItemIcon>
+                        <ListItemButton key={0}>
+                            <ListItemIcon onClick={() => {navigate('/games')}}>
                             <CottageIcon/>
                             </ListItemIcon>
                             <ListItemText primary='Home' />
@@ -98,13 +67,7 @@ const Header:React.FC = () => {
             </Drawer>
             
             <div className='header_stats'>
-                <h3
-                style={{alignItems: 'right'}}
-                >Moves {moves}</h3>
                 <h1>PASYANS COMPETITIVE</h1>
-                <h3
-                style={{alignItems: 'left'}}
-                >{minutes.toString().padStart(2,'0')}:{seconds.toString().padStart(2,'0')}</h3>
             </div>
             <div className='header_profile'>
                 <img src="BUBY.png" alt="" />
@@ -119,4 +82,4 @@ const Header:React.FC = () => {
     );
 }
  
-export default Header;
+export default HeaderLite;

@@ -7,7 +7,7 @@ import { apiCards } from "../store/reducers/CardsServices";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { setColumns, setRestart, toggleShowModal } from "../store/reducers/ColumnsSlice";
 import Modal from '../Modal/Modal';
-  
+import { useNavigate, useParams } from "react-router-dom";
 
 interface CardListProps {
     
@@ -15,7 +15,7 @@ interface CardListProps {
  
 const CardList: React.FC<CardListProps> = () => {
 
-
+    const {easyHard} = useParams();
     
     let bottomRange = 90;
 
@@ -67,6 +67,10 @@ const CardList: React.FC<CardListProps> = () => {
         }
     }, [restart])
     
+    useEffect(() => {
+        refetch()
+        
+    }, [easyHard])
 
     if (placeHolders[0].slice(-1)[0] && getCardByCode(placeHolders[0].slice(-1)[0]).value === 'KING' && 
     placeHolders[1].slice(-1)[0] && getCardByCode(placeHolders[1].slice(-1)[0]).value === 'KING' && 
