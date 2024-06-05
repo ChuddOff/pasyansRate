@@ -63,18 +63,18 @@ $mobile-s: 480px;
     .header {
 
         .else {
-            width: 60px;
+            width: auto;
         }
 
         &_stats {
-
+            gap: 0px;
 
             h1 {
                 display: none;
             }
             h3 {
-                font-size: 15px;
-                width: 70px;
+                font-size: 14px;
+                width: 60px;
             }
         }
 
@@ -95,12 +95,12 @@ $mobile-s: 480px;
                 h3 {
                     margin: 0;
                     padding: 0;
-                    font-size: 13px;
+                    font-size: 12px;
                 }
                 h4 {
                     margin: 0;
                     padding: 0;
-                    font-size: 13px;
+                    font-size: 11px;
                 }
             }
         }

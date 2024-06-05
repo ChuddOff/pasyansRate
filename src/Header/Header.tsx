@@ -15,12 +15,16 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import CachedIcon from '@mui/icons-material/Cached';
 
 import './Header.scss'
+import { setRestart } from '../store/reducers/ColumnsSlice';
  
 const Header:React.FC = () => {
 
-    const {moves} = useAppSelector(state => state.columns)
+    const {restart, moves} = useAppSelector(state => state.columns)
+
+    const dispatch = useAppDispatch();
 
     const [open, setOpen] = useState(false);
     const { seconds, minutes, start, pause, reset } = useStopwatch({ autoStart: true });
@@ -31,13 +35,26 @@ const Header:React.FC = () => {
         start()
     }, [start])
 
-    
+    const getNewCards = async () => {
+        dispatch(setRestart(true))
+        
+    }
+
+    useEffect(() => {
+        if (restart) {
+            reset()
+        }
+        
+    }, [restart])
 
     return (
         <header className='header'>
             <div className='else'>
-                <Button style={{width: 'inherit'}} onClick={() => {setOpen(true)}}>
+                <Button sx={{ width: '50px',  padding: '0' }} onClick={() => {setOpen(true)}}>
                     <MoreVertIcon/>
+                </Button>
+                <Button sx={{ width: '50px',  padding: '0' }} onClick={() => {getNewCards()}}>
+                    <CachedIcon/>
                 </Button>
             </div>
             <Drawer open={open} className='drawer' onClose={() => {setOpen(false)}}>

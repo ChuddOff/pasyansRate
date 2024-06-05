@@ -1,11 +1,11 @@
 import {CardItem} from "../CardItem/CardItem";
 import { PlaceHolder } from "../CardItem/CardItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import './CardList.scss'
 import { apiCards } from "../store/reducers/CardsServices";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { setColumns, toggleShowModal } from "../store/reducers/ColumnsSlice";
+import { setColumns, setRestart, toggleShowModal } from "../store/reducers/ColumnsSlice";
 import Modal from '../Modal/Modal';
   
 
@@ -29,27 +29,29 @@ const CardList: React.FC<CardListProps> = () => {
 
     const dispatch = useAppDispatch();
 
-    const [ success, setSuccess] = useState(false)
     const [ end, setEnd] = useState(false)
 
-    const {cardsOther, cardsOpened, showModal, cards, columns} = useAppSelector(state => state.columns)
+    const {restart, cardsOther, cardsOpened, showModal, cards, columns, placeHolders} = useAppSelector(state => state.columns)
     
     const getCardByCode = (code: string) => {
         return cards[cards.map(item => item.code).indexOf(code)]
     }
 
-    const {data, isSuccess, isLoading, isError} = apiCards.useGetCardsQuery()
+    const {data, isSuccess, isFetching, isError, refetch} = apiCards.useGetCardsQuery()
 
     if (isError) {
         console.log('Error');
     }
-    if (isLoading) {
+    if (isFetching) {
         console.log('Loading');
     }
-    if (isSuccess && !success) {
-        dispatch(setColumns(data.cards))
-        setSuccess(true)
-    }
+
+    useEffect(() => {
+        if (isSuccess) {
+            dispatch(setColumns(data.cards))
+            dispatch(setRestart(false))
+        }
+    }, [data, isSuccess])
     
     if (!end && cardsOpened.length === 52 && cardsOther.length === 0) {
         setEnd(true)
@@ -57,6 +59,20 @@ const CardList: React.FC<CardListProps> = () => {
             dispatch(toggleShowModal())
         }, 100);
         
+    }
+
+    useEffect(() => {
+        if (restart) {
+            refetch()
+        }
+    }, [restart])
+    
+
+    if (placeHolders[0].slice(-1)[0] && getCardByCode(placeHolders[0].slice(-1)[0]).value === 'KING' && 
+    placeHolders[1].slice(-1)[0] && getCardByCode(placeHolders[1].slice(-1)[0]).value === 'KING' && 
+    placeHolders[2].slice(-1)[0] && getCardByCode(placeHolders[2].slice(-1)[0]).value === 'KING' && 
+    placeHolders[3].slice(-1)[0] && getCardByCode(placeHolders[3].slice(-1)[0]).value === 'KING') {
+        // clearInterval(intervalId);
     }
 
     return (  

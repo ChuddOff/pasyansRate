@@ -10,8 +10,6 @@ body {
 * {
   user-select: none; /* Для Chrome/Opera/Safari */
   -webkit-user-select: none; /* Для Chrome/Opera/Safari */
-  -moz-user-select: none; /* Для Firefox */
-  -ms-user-select: none; /* Для Internet Explorer/Edge */
   box-sizing: border-box;
 }
 

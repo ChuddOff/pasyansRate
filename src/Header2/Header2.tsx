@@ -4,9 +4,20 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { useDrop } from 'react-dnd';
 import './Header2.scss'
 import '../CardItem/CardItem.scss'
+import { transform } from 'typescript';
+import { HtmlHTMLAttributes, useRef, useState } from 'react';
 
  
 const Header2: React.FC = () => {
+
+    let gapRange = 50;
+
+    if (window.innerWidth <= 1023) {
+        gapRange = 40;
+    }
+    if (window.innerWidth <= 767) {
+        gapRange = 22;
+    }
 
     const dispatch = useAppDispatch();
     const {currentCard, placeHoldersReq, cards, cardsOther, cardOtherIndex, placeHolders} = useAppSelector(state => state.columns)
@@ -14,6 +25,8 @@ const Header2: React.FC = () => {
     const getCardByCode = (code: string) => {
         return cards[cards.map(item => item.code).indexOf(code)]
     }
+
+    const easHard = 3;
 
     const [ , drop0] = useDrop({
         accept: 'card',
@@ -39,9 +52,13 @@ const Header2: React.FC = () => {
             dispatch(addPlaceCard(NumberSuit));
             dispatch(deleteCard())
         }
-        
-        
     }
+
+    const [button, setButton] = useState(true)
+
+    const ref0 = useRef<HTMLDivElement>(null)
+    const ref50 = useRef<HTMLDivElement>(null)
+    const ref100 = useRef<HTMLDivElement>(null)
 
     const giveCardOther = () => {
         dispatch(changeOtherCard(cardOtherIndex+1))
@@ -49,23 +66,92 @@ const Header2: React.FC = () => {
         if (cardsOther.length === cardOtherIndex+1) {
             dispatch(changeOtherCard(-1))
         }
-    }
 
+        ref0.current?.classList.add('setShow0');
+        ref50.current?.classList.add('setShow50');
+        ref100.current?.classList.add('setShow100');
+        setButton(false)
+
+        setTimeout(() => {
+            ref0.current?.classList.remove('setShow0');
+            ref50.current?.classList.remove('setShow50');
+            ref100.current?.classList.remove('setShow100');
+            setButton(true)
+        }, 500)
+
+        
+    }
+    
     return ( 
         <div className="header2">
             <div className="givenCards">
-                <div onClick={() => giveCardOther()} >
-                <img className='cardButton' src="CARD.png" alt="" />
+                <div onClick={() => {
+                        if (button) {
+                            giveCardOther()
+                        }
+                }} >
+                { cardsOther.length === cardOtherIndex+1 ?
+                    <div>
+                    <img  className='cardButton' src="REPLACE.png" alt="" />
+                    </div> :
+                    <img className='cardButton' src="CARD.png" alt="" />
+                }
+                
                 </div>
                 <div className="list">
-                    {cardOtherIndex!==-1 ? <CardItem 
-                                            suit={cardsOther[cardOtherIndex].suit} 
-                                            value={cardsOther[cardOtherIndex].value} 
-                                            code={cardsOther[cardOtherIndex].code}  
-                                            isOther = {true} /> : 
-                                            <div onClick={() => giveCardOther()}>
-                                            <img  className='cardButton' src="REPLACE.png" alt="" />
-                                            </div>}
+                    
+                    {cardsOther[cardOtherIndex-2] && 
+                        <div 
+                        ref={ref100}
+                        className='setShow100'
+                        style={{
+                            display: 'relative',
+                            transition: '0.5s',
+                            transform: `translateX(${gapRange}px)`,
+                            // animation: 'show100 0.5s ease-in-out forwards',
+                            
+                        }}>
+                        <CardItem 
+                        suit={cardsOther[cardOtherIndex-2].suit} 
+                        value={cardsOther[cardOtherIndex-2].value} 
+                        code={cardsOther[cardOtherIndex-2].code}  
+                        isOther = {true} />
+                        </div>}  
+                          
+                    {cardsOther[cardOtherIndex-1] && 
+                    <div
+                    ref={ref50}
+                    className='setShow50'
+                    style={{
+                        display: 'relative',
+                        // animation: 'show50 0.5s ease-in-out forwards',
+                        transform: 'translateX(0px)',
+                        transition: '0.5s'
+                    }}>
+                    <CardItem 
+                    suit={cardsOther[cardOtherIndex-1].suit} 
+                    value={cardsOther[cardOtherIndex-1].value} 
+                    code={cardsOther[cardOtherIndex-1].code}  
+                    isOther = {true} />
+                    </div>
+                    }  
+                    {cardsOther[cardOtherIndex] && 
+                    <div 
+                    ref={ref0}
+                    className='setShow0'
+                     style={{
+                        display: 'relative',
+                        transform: `translateX(-${gapRange}px)`,
+                        transition: '0.5s'
+                    }}>
+                        <CardItem 
+                        suit={cardsOther[cardOtherIndex].suit} 
+                        value={cardsOther[cardOtherIndex].value} 
+                        code={cardsOther[cardOtherIndex].code}  
+                        isOther = {true} />
+                    </div>
+                    }  
+                    
                 </div>
 
             </div>

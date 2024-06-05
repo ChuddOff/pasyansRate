@@ -7,14 +7,16 @@
     gap: 100px;
 
     .givenCards {
-
+        position: relative;
         display: flex;
-        max-width: 300px;
+        max-width: 400px;
         width: 100%;
         justify-content: space-between;
-        gap: 10px;
+        gap: 50px;
 
         .cardButton {
+            position: relative;
+            z-index: 10;
             width: 90px;
             height: 130px;
             pointer-events: none;
@@ -26,6 +28,7 @@
 
         .list {
             display: flex;
+            position: relative;
         }
     }
 
@@ -34,7 +37,7 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        gap: 10px;
+        gap: 0px;
 
         
 
@@ -52,6 +55,8 @@
     
             background-color: white;
         
+            position: relative;
+
             box-shadow: 0 0 2px rgb(0, 0, 0);;
         
             width: 90px;
@@ -119,12 +124,123 @@
     }
 }
 
+.setShow0 {
+    animation: show0 0.5s ease-in-out forwards;
+}
+.setShow50 {
+    animation: show50 0.5s ease-in-out forwards;
+}
+.setShow100 {
+    animation: show100 0.5s ease-in-out forwards;
+}
+
+@keyframes show0 {
+    0% {
+      transform:translateX(-309px);
+      opacity: 100%;
+    }
+    100% {
+        transform: translateX(-50px);
+        opacity: 100%;
+    }
+  }
+@keyframes show50 {
+    0% {
+      transform:translateX(40px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+  }
+  @keyframes show100 {
+    0% {
+      transform:translateX(90px);
+    }
+    100% {
+        transform: translateX(50px);
+    }
+  }
+
+  @keyframes lshow0 {
+    0% {
+      transform:translateX(-309px);
+      opacity: 100%;
+    }
+    100% {
+        transform: translateX(-40px);
+        opacity: 100%;
+    }
+  }
+@keyframes lshow50 {
+    0% {
+      transform:translateX(30px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+  }
+  @keyframes lshow100 {
+    0% {
+      transform:translateX(70px);
+    }
+    100% {
+        transform: translateX(40px);
+    }
+  }
+  @keyframes mshow0 {
+    0% {
+      transform:translateX(-309px);
+      opacity: 100%;
+    }
+    100% {
+        transform: translateX(-22px);
+        opacity: 100%;
+    }
+  }
+@keyframes mshow50 {
+    0% {
+      transform:translateX(18px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+  }
+  @keyframes mshow100 {
+    0% {
+      transform:translateX(40px);
+    }
+    100% {
+        transform: translateX(22px);
+    }
+  }
+
+// @keyframes show100 {
+// 0% {
+//     transform:translateX(-400px);
+//     opacity: 0%;
+// }
+// 100% {
+//     transform: translateX(-100px);
+//     opacity: 100%;
+// }
+// }
 $tablet: 1023px;
 $mobile: 767px;
 $mobile-s: 480px;
 
 
 @media (max-width: $tablet) {
+
+    .setShow0 {
+        animation: lshow0 0.5s ease-in-out forwards;
+    }
+    .setShow50 {
+        animation: lshow50 0.5s ease-in-out forwards;
+    }
+    .setShow100 {
+        animation: lshow100 0.5s ease-in-out forwards;
+    }
+
     .header2 {
         .givenCards {
             .cardButton {
@@ -170,12 +286,24 @@ $mobile-s: 480px;
 }
 
 @media (max-width: $mobile) {
+
+    .setShow0 {
+        animation: mshow0 0.5s ease-in-out forwards;
+    }
+    .setShow50 {
+        animation: mshow50 0.5s ease-in-out forwards;
+    }
+    .setShow100 {
+        animation: mshow100 0.5s ease-in-out forwards;
+    }
+
     .header2 {
 
         padding: 10px 10px;
-        gap: 80px;
+        gap: 0px;
 
         .givenCards {
+            gap: 0px;
             .cardButton {
                 width: 40px;
                 height: 60px;

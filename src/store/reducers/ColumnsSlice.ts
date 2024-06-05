@@ -13,12 +13,18 @@ interface UserState {
     placeHolders: string[][];
     currentCard: currentCard;
     showModal: boolean;
+    restart: boolean;
     // [key: string]: Card[] | undefined;
 }
 interface CardsOther {
     suit: string;
     value: string;
     code: string;
+}
+
+interface EndUp {
+    card: currentCard;
+    index: number;
 }
 
 const initialState: UserState = {
@@ -42,7 +48,9 @@ const initialState: UserState = {
         isPlace: false,
         isField: false
     },
-    showModal: false
+    showModal: false,
+    restart: false,
+
 }
 
 
@@ -61,6 +69,28 @@ const ColumnsSlice = createSlice({
     reducers: {
         setColumns: (state, action: PayloadAction<Card[]>) => {
             
+            state.cards = [];
+            state.columns = [[], [], [], [], [], [], []];
+            state.cardsOther = [];
+            state.cardOtherIndex = -1
+            state.cardsOpened = []
+            state.isDrag = false
+            state.moves = 0
+            state.placeHoldersReq = ['ACE', 'ACE', 'ACE', 'ACE']
+            state.placeHolders = [[], [], [], []]
+
+            state.currentCard = {
+                suit: '0',
+                value: '0',
+                code: '0',
+                bottom: 0,
+                columnIndex: 0,
+                cardIndex: 0,
+                isOther: false,
+                isPlace: false,
+                isField: false
+            }
+        
             const columnsUpdate: Card[][] =  [[], [], [], [], [], [], []]
             const cardsUpdate: Card[]  =  [...action.payload];
             
@@ -203,6 +233,29 @@ const ColumnsSlice = createSlice({
         toggleShowModal: (state) => {
             state.showModal = !state.showModal
         },
+        endUpPlaceHolder:  (state, action: PayloadAction<number>) => {
+            const suits = ["HEARTS", "DIAMONDS", "CLUBS", "SPADES"];
+            const valueArr = ['ACE', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING']
+
+            if (state.columns[action.payload].slice(-1)[0]) {
+    
+                const card: currentCard = state.cards[state.cards.map(item => item.code).indexOf(state.columns[action.payload].slice(-1)[0])]
+                const index: number = suits.indexOf(card.suit);
+                const cardPlace: currentCard = state.cards[state.cards.map(item => item.code).indexOf(state.placeHolders[index].slice(-1)[0])]
+                
+                if (valueArr.indexOf(card.value) === valueArr.indexOf(cardPlace.value) + 1) {
+    
+                    state.placeHolders[index].push(card.code)
+                    state.placeHoldersReq[index] = valueArr[valueArr.indexOf(card.value)+1]
+                    state.columns[card.columnIndex].splice(card.cardIndex)
+                }
+
+            }
+            
+        },
+        setRestart: (state, action: PayloadAction<boolean>) => {
+            state.restart = action.payload;
+        },
     }
 })
 
@@ -220,5 +273,7 @@ export const {
     addKingCard,
     upPlaceHolderReq,
     addPlaceCard,
-    toggleShowModal
+    toggleShowModal,
+    endUpPlaceHolder,
+    setRestart
 } = ColumnsSlice.actions; 

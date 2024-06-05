@@ -6,6 +6,7 @@ import {
   deleteCard,
   addPlaceCard,
   upPlaceHolderReq,
+  endUpPlaceHolder,
 } from "../store/reducers/ColumnsSlice";
 import "./Modal.scss";
 import { currentCard } from "../store/reducers/interfaces";
@@ -74,27 +75,35 @@ const Modal: React.FC<ModalProps> = () => {
 //     });
 //   }, [currentCard, placeHolders, cards, columns]);
 
-const solve = useCallback(() => {
-    columns.forEach((item: string[]) => {
-      if (item.slice(-1)[0]) {
-        console.log(item.slice(-1)[0]);
-            console.log(currentCard);
-            dispatch(setCurrentCard(getCardByCode(item.slice(-1)[0])));
-            dispatch(deleteCard());
-      }
-    });
-  }, [currentCard, placeHolders, cards, columns]);
 
   const endUpMatch = () => {
-    setInterval(solve, 1000);
+    let i = 0;
+    let intervalId = setInterval(() => {
+      
+      dispatch(endUpPlaceHolder(i));
+      
+      i++
+      if (i == 7) {
+          i = 0
+      }
+
+      if (getCardByCode(placeHolders[0].slice(-1)[0]).value === 'KING' && 
+      getCardByCode(placeHolders[1].slice(-1)[0]).value === 'KING' && 
+      getCardByCode(placeHolders[2].slice(-1)[0]).value === 'KING' && 
+      getCardByCode(placeHolders[3].slice(-1)[0]).value === 'KING') {
+        clearInterval(intervalId);
+      }
+    }, 50);
   };
+
+  
 
   const closeModal = () => {
     ref.current?.classList.add("setHide");
 
     setTimeout(() => {
       dispatch(toggleShowModal());
-    }, 1000);
+    }, 50);
   };
 
   return (
@@ -109,7 +118,7 @@ const solve = useCallback(() => {
             <button
               type="button"
               onClick={() => {
-                endUpMatch();
+                endUpMatch()
               }}
             >
               Да
