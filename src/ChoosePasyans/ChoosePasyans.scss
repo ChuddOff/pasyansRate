@@ -33,7 +33,7 @@
             text-shadow: 1px 1px 2px rgb(0, 0, 0);
             font-weight: 700;
             width: 300px;
-            margin: 5px;
+            margin: 5px 0 10px 0;
         }
         img {
             width: 400px;
@@ -63,7 +63,7 @@
             text-shadow: 1px 1px 2px rgb(0, 0, 0);
             font-weight: 700;
             width: 300px;
-            margin: 5px;
+            margin: 5px 0 10px 0;
         }
 
         img {
@@ -75,4 +75,38 @@
         }
     }
 
+}
+
+
+$tablet: 1023px;
+$mobile: 767px;
+$mobile-s: 480px;
+
+@media (max-width: $mobile) {
+    .choose {
+        h1 {
+            margin-bottom: 20px;
+        }
+    }
+    
+    .game {
+        gap: 30px;
+
+        &_easy {
+            width: auto;
+            height: auto;
+            img {
+                width: 350px;
+            }
+        }
+
+        &_hard {
+            width: auto;
+            height: auto;
+            img {
+                width: 350px;
+            }
+        }
+    }
+    
 }
