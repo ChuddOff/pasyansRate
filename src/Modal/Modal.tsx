@@ -111,7 +111,7 @@ const Modal: React.FC<ModalProps> = () => {
       <div ref={ref} className="dialogue setShow">
         <div className="info">
           <h2>
-            У вас получилось! <br /> Хотите доразложим колоду за вас?
+          You did it! <br /> Would you like us to complete the deck for you?
           </h2>
 
           <div className="buttons">
@@ -119,12 +119,13 @@ const Modal: React.FC<ModalProps> = () => {
               type="button"
               onClick={() => {
                 endUpMatch()
+                closeModal()
               }}
             >
-              Да
+              Yes
             </button>
             <button type="button" onClick={closeModal}>
-              Нет
+              No
             </button>
           </div>
         </div>

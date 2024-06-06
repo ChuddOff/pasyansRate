@@ -1,20 +1,23 @@
 import {CardItem} from "../CardItem/CardItem";
 import { PlaceHolder } from "../CardItem/CardItem";
 import { useEffect, useState } from "react";
-
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import './CardList.scss'
 import { apiCards } from "../store/reducers/CardsServices";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { setColumns, setRestart, toggleShowModal } from "../store/reducers/ColumnsSlice";
 import Modal from '../Modal/Modal';
 import { useNavigate, useParams } from "react-router-dom";
+import WinModal from "../WinModal/WinModal";
+import JSConfetti from 'js-confetti'
 
 interface CardListProps {
     
 }
  
 const CardList: React.FC<CardListProps> = () => {
-
+    const jsConfetti = new JSConfetti()
     const {easyHard} = useParams();
     
     let bottomRange = 90;
@@ -64,6 +67,12 @@ const CardList: React.FC<CardListProps> = () => {
     useEffect(() => {
         if (restart) {
             refetch()
+            jsConfetti.addConfetti({
+                emojis: ['💣'],
+                emojiSize: 50,
+                confettiNumber: 20,
+                confettiRadius: 60,
+             })
         }
     }, [restart])
     
@@ -111,6 +120,23 @@ const CardList: React.FC<CardListProps> = () => {
             ))}
         </div>
         {showModal && <Modal/>}
+        {isFetching && 
+        <div className="blur">
+            <div className="loading">
+                <h2>Loading...</h2>
+
+                <Box sx={{ width: '100%' }}>
+                    <LinearProgress />
+                </Box>
+            </div>
+            
+        </div>
+        }
+        {(placeHolders[0].slice(-1)[0] && getCardByCode(placeHolders[0].slice(-1)[0]).value === 'KING' && 
+    placeHolders[1].slice(-1)[0] && getCardByCode(placeHolders[1].slice(-1)[0]).value === 'KING' && 
+    placeHolders[2].slice(-1)[0] && getCardByCode(placeHolders[2].slice(-1)[0]).value === 'KING' && 
+    placeHolders[3].slice(-1)[0] && getCardByCode(placeHolders[3].slice(-1)[0]).value === 'KING') && <WinModal/>}
+        
         </div>
      );
 }

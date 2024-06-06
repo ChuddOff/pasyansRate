@@ -6,6 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
+import About from '../About/About';
 
 const ChooseGame = lazy(() => import ('../pages/choosegame'))
 
@@ -21,7 +22,7 @@ function App() {
           <Suspense>
             <Routes>
 
-            <Route path="*" element={<Game />} />
+            <Route path="*" element={<About />} />
 
             <Route path="/games" element={<ChooseGame />} />
 

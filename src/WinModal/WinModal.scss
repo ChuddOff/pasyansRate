@@ -1,0 +1,99 @@
+.modalWin {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+
+    .dialogueWin {
+        border-radius: 15px;
+        position: fixed;
+        
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+
+
+        .closeWin {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgb(42, 76, 199);
+
+            button {    
+                color: white;
+            }
+        }
+        
+        .infoWin {
+            padding: 20px;
+
+            h2 {
+                position: absolute;
+                top: 10%;
+                left: 50%;
+                transform: translate(-50%);
+                padding: 0;
+                margin: 0;
+                margin-bottom: 10px;
+                color: #ffffff;
+                font-size: 40px;
+            }
+
+            .buttonsWin {
+                display: flex;
+                gap: 20px;
+                width: 100%;
+
+                button {
+                    border-radius: 25px;
+                    border: none;
+                    padding: 10px;
+                    width: 50%;
+                    transition: .2s linear;
+                    background: #4284f5;
+                    margin: auto;
+                    color: white;
+                    font-size: 16px;
+                    font-weight: 700;
+                    height: 60px;
+                }
+                button:hover {
+                    box-shadow: 0 0 0 2px white, 0 0 0 4px #3C82F8;
+                }
+            }
+        }
+        
+    }
+}
+
+.setShowWin {
+    animation: showWin 1s ease-in-out forwards;
+}
+.setHideWin {
+    animation: hideWin 1s ease-in-out forwards;
+}
+
+@keyframes showWin {
+    0% {
+        top: 40%;
+        opacity: 0%;
+    }
+    100% {
+        top: 50%;
+        opacity: 100%;
+    }
+  }
+
+@keyframes hideWin {
+0% {
+    bottom: 7%;
+    opacity: 100%;
+}
+100% {
+    bottom: -10%;
+    opacity: 0%;
+}
+}
