@@ -125,7 +125,7 @@ const CardList: React.FC<CardListProps> = () => {
             <div className="loading">
                 <h2>Loading...</h2>
 
-                <Box sx={{ width: '100%' }}>
+                <Box sx={{ width: '80%' }}>
                     <LinearProgress />
                 </Box>
             </div>

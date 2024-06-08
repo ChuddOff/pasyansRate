@@ -44,6 +44,10 @@ const Header:React.FC = () => {
         if (restart) {
             reset()
         }
+
+        if (localStorage.getItem('pass') === null) {
+            navigate('/signin');
+        }
         
     }, [restart])
 

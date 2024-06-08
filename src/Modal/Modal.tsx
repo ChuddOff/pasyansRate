@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import {
   toggleShowModal,
@@ -22,58 +22,6 @@ const Modal: React.FC<ModalProps> = () => {
     (state) => state.columns
   );
 
-  const getCardByCode = (code: string): currentCard => {
-    return cards[cards.map((item) => item.code).indexOf(code)];
-  };
-
-  const checkValue = (valueOld: string, valueNew: string) => {
-    const valueArr = [
-      "ACE",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "JACK",
-      "QUEEN",
-      "KING",
-    ];
-
-    return valueArr.indexOf(valueNew) === valueArr.indexOf(valueOld) + 1;
-  };
-
-//   const solve = useCallback(() => {
-//     console.log(JSON.stringify(columns, null, 2));
-
-//     columns.forEach((item: string[]) => {
-//       if (item.slice(-1)[0]) {
-//         console.log(item.slice(-1)[0]);
-
-//         const suits = ["HEARTS", "DIAMONDS", "CLUBS", "SPADES"];
-
-//         const index: number = suits.indexOf(
-//           getCardByCode(item.slice(-1)[0]).suit
-//         );
-
-//         if (
-//           checkValue(
-//             getCardByCode(placeHolders[index].slice(-1)[0]).value,
-//             getCardByCode(item.slice(-1)[0]).value
-//           )
-//         ) {
-//           dispatch(setCurrentCard(getCardByCode(item.slice(-1)[0])));
-//           console.log(currentCard);
-//           dispatch(addPlaceCard(index));
-//           dispatch(upPlaceHolderReq(index));
-//           dispatch(deleteCard());
-//         }
-//       }
-//     });
-//   }, [currentCard, placeHolders, cards, columns]);
 
 
   const endUpMatch = () => {
@@ -85,13 +33,6 @@ const Modal: React.FC<ModalProps> = () => {
       i++
       if (i == 7) {
           i = 0
-      }
-
-      if (getCardByCode(placeHolders[0].slice(-1)[0]).value === 'KING' && 
-      getCardByCode(placeHolders[1].slice(-1)[0]).value === 'KING' && 
-      getCardByCode(placeHolders[2].slice(-1)[0]).value === 'KING' && 
-      getCardByCode(placeHolders[3].slice(-1)[0]).value === 'KING') {
-        clearInterval(intervalId);
       }
     }, 50);
   };

@@ -19,6 +19,12 @@ import './Header.scss'
 const HeaderLite:React.FC = () => {
     const [open, setOpen] = useState(false);
     const navigate =  useNavigate();
+
+    useEffect(() =>  {
+        if (localStorage.getItem('pass') === null) {
+            navigate('/signin');
+        }
+    }, [])
     return (
         <header className='header'>
             <div className='else'>

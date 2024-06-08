@@ -37,6 +37,7 @@
         }
         img {
             width: 400px;
+            pointer-events: none;
         }
         &:hover {
             transform: scale(1.05);
@@ -68,6 +69,7 @@
 
         img {
             width: 400px;
+            pointer-events: none;
         }
 
         &:hover {

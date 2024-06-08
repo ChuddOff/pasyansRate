@@ -14,7 +14,9 @@
         left: 50%;
         transform: translate(-50%, -50%);
         
-
+        img {
+            max-width: 560px;
+        }
 
         .closeWin {
             position: absolute;
@@ -96,4 +98,50 @@
     bottom: -10%;
     opacity: 0%;
 }
+}
+
+$tablet: 1023px;
+$mobile: 767px;
+$mobile-s: 480px;
+
+@media (max-width: $mobile) {
+
+    .modalWin {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+    
+        .dialogueWin {
+            border-radius: 15px;
+            position: fixed;
+            
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            
+            img {
+                max-width: 370px;
+                height: 150px;
+            }
+
+            .infoWin {
+
+                h2 {
+                    position: absolute;
+                    top: 10%;
+                    left: 50%;
+                    transform: translate(-50%);
+                    padding: 0;
+                    margin: 0;
+                    margin-bottom: 10px;
+                    color: #ffffff;
+                    font-size: 35px;
+                }
+            }
+        }
+        
+    }
 }

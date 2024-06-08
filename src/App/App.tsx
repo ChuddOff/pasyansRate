@@ -7,6 +7,7 @@ import { TouchBackend } from 'react-dnd-touch-backend';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import About from '../About/About';
+import Login from '../Login/Login';
 
 const ChooseGame = lazy(() => import ('../pages/choosegame'))
 
@@ -23,6 +24,8 @@ function App() {
             <Routes>
 
             <Route path="*" element={<About />} />
+
+            <Route path="/signin" element={<Login />} />
 
             <Route path="/games" element={<ChooseGame />} />
 

@@ -29,6 +29,8 @@
         .list {
             display: flex;
             position: relative;
+            width: 270px;
+            justify-content: flex-end;
         }
     }
 
@@ -353,6 +355,9 @@ $mobile-s: 480px;
                 width: 70px;
                 height: 100px;
             }
+            .list {
+                width: 210px;
+            }
         }
 
         .cardState {
@@ -422,6 +427,9 @@ $mobile-s: 480px;
             .cardButton {
                 width: 40px;
                 height: 60px;
+            }
+            .list {
+                width: 120px;
             }
         }
 
