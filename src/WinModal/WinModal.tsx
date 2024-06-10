@@ -36,6 +36,16 @@ const WinModal: React.FC = () => {
       emojiSize: 50,
       confettiNumber: 10,
    })
+   jsConfetti.addConfetti({
+    emojis: ['⚡️', '🥶', '🎁', '🧨'],
+    emojiSize: 50,
+    confettiNumber: 10,
+ })
+  jsConfetti.addConfetti({
+    emojis: ['⚡️', '🥶', '🎁', '🧨'],
+    emojiSize: 50,
+    confettiNumber: 10,
+})
   })
 
   return (

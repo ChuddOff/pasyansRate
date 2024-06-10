@@ -1,12 +1,12 @@
 import {CardItem} from "../CardItem/CardItem";
 import { PlaceHolder } from "../CardItem/CardItem";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import './CardList.scss'
 import { apiCards } from "../store/reducers/CardsServices";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { setColumns, setRestart, toggleShowModal } from "../store/reducers/ColumnsSlice";
+import { endUpPlaceHolder, setAutoComplete, setColumns, setRestart, toggleShowModal } from "../store/reducers/ColumnsSlice";
 import Modal from '../Modal/Modal';
 import { useNavigate, useParams } from "react-router-dom";
 import WinModal from "../WinModal/WinModal";
@@ -34,7 +34,7 @@ const CardList: React.FC<CardListProps> = () => {
 
     const [ end, setEnd] = useState(false)
 
-    const {restart, cardsOther, cardsOpened, showModal, cards, columns, placeHolders} = useAppSelector(state => state.columns)
+    const {autoComplete, restart, cardsOther, cardsOpened, showModal, cards, columns, placeHolders} = useAppSelector(state => state.columns)
     
     const getCardByCode = (code: string) => {
         return cards[cards.map(item => item.code).indexOf(code)]
@@ -55,6 +55,28 @@ const CardList: React.FC<CardListProps> = () => {
             dispatch(setRestart(false))
         }
     }, [data, isSuccess])
+
+    const timer = useRef<number | null>(null)
+
+    const endUpMatch = () => {
+        let i = 0;
+        timer.current = window.setInterval(() => {
+          
+          dispatch(endUpPlaceHolder(i));
+          
+          i++
+          if (i === 7) {
+              i = 0
+          }
+        }, 50);
+      };
+
+    useEffect(() => {
+        if (autoComplete === true){
+            setAutoComplete(false)
+            endUpMatch()
+        }
+    }, [autoComplete])
     
     if (!end && cardsOpened.length === 52 && cardsOther.length === 0) {
         setEnd(true)
@@ -85,7 +107,11 @@ const CardList: React.FC<CardListProps> = () => {
     placeHolders[1].slice(-1)[0] && getCardByCode(placeHolders[1].slice(-1)[0]).value === 'KING' && 
     placeHolders[2].slice(-1)[0] && getCardByCode(placeHolders[2].slice(-1)[0]).value === 'KING' && 
     placeHolders[3].slice(-1)[0] && getCardByCode(placeHolders[3].slice(-1)[0]).value === 'KING') {
-        // clearInterval(intervalId);
+      
+      if (timer.current !== null) {
+        window.clearInterval(timer.current)
+      }
+      
     }
 
     return (  

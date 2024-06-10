@@ -13,6 +13,7 @@ interface UserState {
     placeHolders: string[][];
     currentCard: currentCard;
     showModal: boolean;
+    autoComplete: boolean;
     restart: boolean;
     // [key: string]: Card[] | undefined;
 }
@@ -49,6 +50,7 @@ const initialState: UserState = {
         isField: false
     },
     showModal: false,
+    autoComplete: false,
     restart: false,
 
 }
@@ -90,6 +92,9 @@ const ColumnsSlice = createSlice({
                 isPlace: false,
                 isField: false
             }
+            state.showModal = false
+            state.autoComplete = false
+            state.restart = false
         
             const columnsUpdate: Card[][] =  [[], [], [], [], [], [], []]
             const cardsUpdate: Card[]  =  [...action.payload];
@@ -256,6 +261,9 @@ const ColumnsSlice = createSlice({
         setRestart: (state, action: PayloadAction<boolean>) => {
             state.restart = action.payload;
         },
+        setAutoComplete: (state, action: PayloadAction<boolean>) => {
+            state.autoComplete = action.payload;
+        },
     }
 })
 
@@ -275,5 +283,6 @@ export const {
     addPlaceCard,
     toggleShowModal,
     endUpPlaceHolder,
-    setRestart
+    setRestart,
+    setAutoComplete
 } = ColumnsSlice.actions; 

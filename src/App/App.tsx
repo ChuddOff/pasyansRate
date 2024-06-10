@@ -8,6 +8,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import About from '../About/About';
 import Login from '../Login/Login';
+import { ClerkProvider } from '@clerk/clerk-react'
+const PUBLISHABLE_KEY: string = process.env.VITE_CLERK_PUBLISHABLE_KEY ?? 'pk_test_Z2l2aW5nLWNvdy05LmNsZXJrLmFjY291bnRzLmRldiQ';
 
 const ChooseGame = lazy(() => import ('../pages/choosegame'))
 
@@ -18,24 +20,26 @@ const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera
 function App() {
   return (
     <Router>
-      <DndProvider backend={isMobileDevice? TouchBackend : HTML5Backend}>
-        <div className="App">
-          <Suspense>
-            <Routes>
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+        <DndProvider backend={isMobileDevice? TouchBackend : HTML5Backend}>
+          <div className="App">
+            <Suspense>
+              <Routes>
 
-            <Route path="*" element={<About />} />
+              <Route path="*" element={<About />} />
 
-            <Route path="/signin" element={<Login />} />
+              <Route path="/signin" element={<Login />} />
 
-            <Route path="/games" element={<ChooseGame />} />
+              <Route path="/games" element={<ChooseGame />} />
 
-            <Route path="/games/:easyHard" element={<Game />} />
+              <Route path="/games/:easyHard" element={<Game />} />
 
-            </Routes>
+              </Routes>
 
-          </Suspense>
-        </div>
-      </DndProvider>
+            </Suspense>
+          </div>
+        </DndProvider>
+      </ClerkProvider>
     </Router>
   );
 }

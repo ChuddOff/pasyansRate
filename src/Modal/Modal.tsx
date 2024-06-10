@@ -1,16 +1,11 @@
-import { useRef, useCallback, useEffect } from "react";
+import { useRef , useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import {
   toggleShowModal,
-  setCurrentCard,
-  deleteCard,
-  addPlaceCard,
-  upPlaceHolderReq,
   endUpPlaceHolder,
+  setAutoComplete,
 } from "../store/reducers/ColumnsSlice";
 import "./Modal.scss";
-import { currentCard } from "../store/reducers/interfaces";
-import { log } from "console";
 
 interface ModalProps {}
 
@@ -18,26 +13,9 @@ const Modal: React.FC<ModalProps> = () => {
   const ref = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
 
-  const { currentCard, placeHolders, cards, columns } = useAppSelector(
+  const { placeHolders, cards } = useAppSelector(
     (state) => state.columns
   );
-
-
-
-  const endUpMatch = () => {
-    let i = 0;
-    let intervalId = setInterval(() => {
-      
-      dispatch(endUpPlaceHolder(i));
-      
-      i++
-      if (i == 7) {
-          i = 0
-      }
-    }, 50);
-  };
-
-  
 
   const closeModal = () => {
     ref.current?.classList.add("setHide");
@@ -59,7 +37,7 @@ const Modal: React.FC<ModalProps> = () => {
             <button
               type="button"
               onClick={() => {
-                endUpMatch()
+                dispatch(setAutoComplete(true))
                 closeModal()
               }}
             >
