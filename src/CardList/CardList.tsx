@@ -6,7 +6,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import './CardList.scss'
 import { apiCards } from "../store/reducers/CardsServices";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { endUpPlaceHolder, setAutoComplete, setColumns, setRestart, toggleShowModal } from "../store/reducers/ColumnsSlice";
+import { endUpPlaceHolder, setAutoComplete, setColumns, setRestart, setWin, toggleShowModal } from "../store/reducers/ColumnsSlice";
 import Modal from '../Modal/Modal';
 import { useNavigate, useParams } from "react-router-dom";
 import WinModal from "../WinModal/WinModal";
@@ -107,7 +107,7 @@ const CardList: React.FC<CardListProps> = () => {
     placeHolders[1].slice(-1)[0] && getCardByCode(placeHolders[1].slice(-1)[0]).value === 'KING' && 
     placeHolders[2].slice(-1)[0] && getCardByCode(placeHolders[2].slice(-1)[0]).value === 'KING' && 
     placeHolders[3].slice(-1)[0] && getCardByCode(placeHolders[3].slice(-1)[0]).value === 'KING') {
-      
+      dispatch(setWin(true))
       if (timer.current !== null) {
         window.clearInterval(timer.current)
       }

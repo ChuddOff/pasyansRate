@@ -20,7 +20,7 @@ const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera
 function App() {
   return (
     <Router>
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY} signUpForceRedirectUrl='/games'>
         <DndProvider backend={isMobileDevice? TouchBackend : HTML5Backend}>
           <div className="App">
             <Suspense>

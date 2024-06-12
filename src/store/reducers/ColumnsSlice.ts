@@ -15,6 +15,7 @@ interface UserState {
     showModal: boolean;
     autoComplete: boolean;
     restart: boolean;
+    win: boolean;
     // [key: string]: Card[] | undefined;
 }
 interface CardsOther {
@@ -52,7 +53,7 @@ const initialState: UserState = {
     showModal: false,
     autoComplete: false,
     restart: false,
-
+    win: false
 }
 
 
@@ -74,12 +75,12 @@ const ColumnsSlice = createSlice({
             state.cards = [];
             state.columns = [[], [], [], [], [], [], []];
             state.cardsOther = [];
-            state.cardOtherIndex = -1
-            state.cardsOpened = []
-            state.isDrag = false
-            state.moves = 0
-            state.placeHoldersReq = ['ACE', 'ACE', 'ACE', 'ACE']
-            state.placeHolders = [[], [], [], []]
+            state.cardOtherIndex = -1;
+            state.cardsOpened = [];
+            state.isDrag = false;
+            state.moves = 0;
+            state.placeHoldersReq = ['ACE', 'ACE', 'ACE', 'ACE'];
+            state.placeHolders = [[], [], [], []];
 
             state.currentCard = {
                 suit: '0',
@@ -92,9 +93,10 @@ const ColumnsSlice = createSlice({
                 isPlace: false,
                 isField: false
             }
-            state.showModal = false
-            state.autoComplete = false
-            state.restart = false
+            state.showModal = false;
+            state.autoComplete = false;
+            state.restart = false;
+            state.win = false;
         
             const columnsUpdate: Card[][] =  [[], [], [], [], [], [], []]
             const cardsUpdate: Card[]  =  [...action.payload];
@@ -117,7 +119,7 @@ const ColumnsSlice = createSlice({
                     isPlace: false,
                     isField: false
                 })
-                state.cardsOpened.push(item.code)
+                state.cardsOpened.push(item.code);
             })
 
             action.payload.forEach(item => {
@@ -136,7 +138,7 @@ const ColumnsSlice = createSlice({
             
             columnsUpdate.forEach((item, i) => {
                 item.forEach((item2) => {
-                    state.columns[i].push(item2.code)
+                    state.columns[i].push(item2.code);
                 })
             })
         },
@@ -144,7 +146,7 @@ const ColumnsSlice = createSlice({
             if (state.cards.map(item => item.code).indexOf(action.payload.code) !== -1) {
                 state.cards[state.cards.map(item => item.code).indexOf(action.payload.code)] = action.payload;
             } else {
-                state.cards.push(action.payload)
+                state.cards.push(action.payload);
             }
         },
         setCurrentCard: (state, action: PayloadAction<currentCard>) => {
@@ -174,85 +176,85 @@ const ColumnsSlice = createSlice({
                 state.cardOtherIndex -= 1;
             }
             if (state.currentCard.isPlace) {
-                const suits = ['HEARTS', 'DIAMONDS', 'CLUBS', 'SPADES']
-                const valueArr = ['ACE', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING']
+                const suits = ['HEARTS', 'DIAMONDS', 'CLUBS', 'SPADES'];
+                const valueArr = ['ACE', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING'];
 
-                const suitIndex = suits.indexOf(state.currentCard.suit)
+                const suitIndex = suits.indexOf(state.currentCard.suit);
 
-                state.placeHolders[suitIndex].splice(state.placeHolders[suitIndex].length-1, 1)
+                state.placeHolders[suitIndex].splice(state.placeHolders[suitIndex].length-1, 1);
 
-                state.placeHoldersReq[suitIndex] = valueArr[valueArr.indexOf(state.currentCard.value)]
+                state.placeHoldersReq[suitIndex] = valueArr[valueArr.indexOf(state.currentCard.value)];
             }
             
             if (state.currentCard.isField) {
                 
-                state.columns[state.currentCard.columnIndex].splice(state.currentCard.cardIndex)
+                state.columns[state.currentCard.columnIndex].splice(state.currentCard.cardIndex);
             }
         },
         addCard: (state, action: PayloadAction<string>) => {
 
-            const placedCard: currentCard = state.cards[state.cards.map(item => item.code).indexOf(action.payload)]
+            const placedCard: currentCard = state.cards[state.cards.map(item => item.code).indexOf(action.payload)];
 
 
 
             if (placedCard.isField && state.currentCard.isField) {
-                const cardList = state.columns[state.currentCard.columnIndex].slice(state.currentCard.cardIndex)
+                const cardList = state.columns[state.currentCard.columnIndex].slice(state.currentCard.cardIndex);
                 
                 cardList.forEach(item => {
-                    state.columns[placedCard.columnIndex].push(item)
+                    state.columns[placedCard.columnIndex].push(item);
                 })
             } else {
                 
-                state.columns[placedCard.columnIndex].push(state.currentCard.code)
+                state.columns[placedCard.columnIndex].push(state.currentCard.code);
             }
 
         },
         addKingCard: (state, action: PayloadAction<number>) => {
 
             if (state.currentCard.isField) {
-                const cardList = state.columns[state.currentCard.columnIndex].slice(state.currentCard.cardIndex)
+                const cardList = state.columns[state.currentCard.columnIndex].slice(state.currentCard.cardIndex);
                 
                 cardList.forEach(item => {
                     
-                    state.columns[action.payload].push(item)
+                    state.columns[action.payload].push(item);
                 })
             }
 
             if (state.currentCard.isOther) {
                 
-                state.columns[action.payload].push(state.currentCard.code)
+                state.columns[action.payload].push(state.currentCard.code);
             }
 
         },
         addPlaceCard: (state, action: PayloadAction<number>) => {
             
-            state.placeHolders[action.payload].push(state.currentCard.code)
+            state.placeHolders[action.payload].push(state.currentCard.code);
 
         },
         upPlaceHolderReq: (state, action: PayloadAction<number>) => {
             
-            const valueArr = ['ACE', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING']
+            const valueArr = ['ACE', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING'];
 
-            state.placeHoldersReq[action.payload] = valueArr[valueArr.indexOf(state.currentCard.value)+1]
+            state.placeHoldersReq[action.payload] = valueArr[valueArr.indexOf(state.currentCard.value)+1];
         },
         toggleShowModal: (state) => {
             state.showModal = !state.showModal
         },
         endUpPlaceHolder:  (state, action: PayloadAction<number>) => {
             const suits = ["HEARTS", "DIAMONDS", "CLUBS", "SPADES"];
-            const valueArr = ['ACE', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING']
+            const valueArr = ['ACE', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING'];
 
             if (state.columns[action.payload].slice(-1)[0]) {
     
-                const card: currentCard = state.cards[state.cards.map(item => item.code).indexOf(state.columns[action.payload].slice(-1)[0])]
+                const card: currentCard = state.cards[state.cards.map(item => item.code).indexOf(state.columns[action.payload].slice(-1)[0])];
                 const index: number = suits.indexOf(card.suit);
-                const cardPlace: currentCard = state.cards[state.cards.map(item => item.code).indexOf(state.placeHolders[index].slice(-1)[0])]
+                const cardPlace: currentCard = state.cards[state.cards.map(item => item.code).indexOf(state.placeHolders[index].slice(-1)[0])];
                 
                 if (valueArr.indexOf(card.value) === valueArr.indexOf(cardPlace.value) + 1) {
     
-                    state.placeHolders[index].push(card.code)
-                    state.placeHoldersReq[index] = valueArr[valueArr.indexOf(card.value)+1]
-                    state.columns[card.columnIndex].splice(card.cardIndex)
+                    state.placeHolders[index].push(card.code);
+                    state.placeHoldersReq[index] = valueArr[valueArr.indexOf(card.value)+1];
+                    state.columns[card.columnIndex].splice(card.cardIndex);
                 }
 
             }
@@ -263,6 +265,9 @@ const ColumnsSlice = createSlice({
         },
         setAutoComplete: (state, action: PayloadAction<boolean>) => {
             state.autoComplete = action.payload;
+        },
+        setWin: (state, action: PayloadAction<boolean>) => {
+            state.win = action.payload;
         },
     }
 })
@@ -284,5 +289,6 @@ export const {
     toggleShowModal,
     endUpPlaceHolder,
     setRestart,
-    setAutoComplete
+    setAutoComplete,
+    setWin
 } = ColumnsSlice.actions; 

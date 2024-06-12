@@ -14,17 +14,38 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { useNavigate } from "react-router-dom";
-import './Header.scss'
+import { useHttp } from '../hooks/http.hook';
+import { useAuth, SignedIn, UserButton, useUser, useSignUp  } from "@clerk/clerk-react";
+
+import './HeaderLite.scss'
+
  
 const HeaderLite:React.FC = () => {
+
+    const {request} = useHttp();
+
+    const { isSignedIn } = useAuth();
+    const { user } = useUser();
+    const {  } = useSignUp();
+
     const [open, setOpen] = useState(false);
     const navigate =  useNavigate();
 
     useEffect(() =>  {
-        if (localStorage.getItem('pass') === null) {
+
+        if (localStorage.getItem('firstReg') === 't') {
+            console.log(localStorage.getItem('firstReg'));
+            
+            localStorage.setItem('firstReg', 'f')
+            request('/api/zamer/postProfile', 'POST', JSON.stringify({
+                name: user?.id
+            }))
+        }
+
+        if (!isSignedIn) {
             navigate('/signin');
         }
-    }, [])
+    }, [isSignedIn])
     return (
         <header className='header'>
             <div className='else'>
@@ -76,10 +97,12 @@ const HeaderLite:React.FC = () => {
                 <h1>PASYANS COMPETITIVE</h1>
             </div>
             <div className='header_profile'>
-                <img src="BUBY.png" alt="" />
+                <SignedIn>
+                    <UserButton afterSignOutUrl='/signin'  />
+                </SignedIn>
 
                 <div className='header_profile_info'>
-                    <h3>Chudd Off</h3>
+                    <h3>{user?.firstName}</h3>
                     <h4>Rate 1000</h4>
                 </div>
             </div>

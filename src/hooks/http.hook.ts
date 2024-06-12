@@ -4,8 +4,8 @@ export const useHttp = () => {
     // const [proc, setProc] = useState('waiting');
 
     const request = useCallback(async (url: string, method: string = 'GET', body: any = null, headers: any = {'Content-Type': 'application/json'}) => {
-        const urlDomen = process.env.BACKURL || "https://heroes-back.vercel.app"
-        // const urlDomen = "http://localhost:4000"
+        // const urlDomen = process.env.BACKURL || "https://heroes-back.vercel.app"
+        const urlDomen = "http://localhost:4000"
         // setProc('loading');
         try {
             const response = await fetch(urlDomen+url, {method, body, headers}); 

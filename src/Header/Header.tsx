@@ -16,40 +16,61 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import CachedIcon from '@mui/icons-material/Cached';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import './Header.scss'
 import { setRestart } from '../store/reducers/ColumnsSlice';
+import { useAuth, SignedIn, UserButton, useUser  } from "@clerk/clerk-react";
+import { useHttp } from '../hooks/http.hook';
  
 const Header:React.FC = () => {
+
+    const {easyHard} = useParams();
+    const {request} = useHttp();
+    const { isSignedIn } = useAuth();
+    const { user } = useUser();
+
     const navigate =  useNavigate();
-    const {restart, moves} = useAppSelector(state => state.columns)
+    const {restart, moves, win} = useAppSelector(state => state.columns)
 
     const dispatch = useAppDispatch();
 
     const [open, setOpen] = useState(false);
     const { seconds, minutes, start, pause, reset } = useStopwatch({ autoStart: true });
-    
-    const list = ['Home', 'Easy', 'Profile', 'Stats'];
 
     useEffect(() => {
         start()
     }, [start])
 
+    useEffect(() => {
+        if (win) {
+            pause();
+            request(`/api/zamer/postTime${easyHard}`, 'POST', JSON.stringify({
+                name: user?.id,
+                seconds: minutes*60 + seconds
+            }))
+        }
+    }, [win])
+
     const getNewCards = async () => {
+        request('/api/zamer/postElo', 'POST', JSON.stringify({
+            name: user?.id,
+            eloChange: easyHard === 'easy' ? -100 : -10
+        }))
         dispatch(setRestart(true))
-        
     }
 
     useEffect(() => {
         if (restart) {
             reset()
         }
-
-        if (localStorage.getItem('pass') === null) {
-            navigate('/signin');
-        }
         
     }, [restart])
+
+    useEffect(() =>  {
+        if (!isSignedIn) {
+            navigate('/signin');
+        }
+    }, [isSignedIn])
 
     return (
         <header className='header'>
@@ -111,10 +132,12 @@ const Header:React.FC = () => {
                 >{minutes.toString().padStart(2,'0')}:{seconds.toString().padStart(2,'0')}</h3>
             </div>
             <div className='header_profile'>
-                <img src="BUBY.png" alt="" />
+                <SignedIn>
+                    <UserButton afterSignOutUrl='/signin' />
+                </SignedIn>
 
                 <div className='header_profile_info'>
-                    <h3>Chudd Off</h3>
+                    <h3>{user?.firstName}</h3>
                     <h4>Rate 1000</h4>
                 </div>
             </div>
