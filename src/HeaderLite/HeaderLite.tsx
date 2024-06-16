@@ -29,7 +29,10 @@ const HeaderLite:React.FC = () => {
     const { isSignedIn } = useAuth();
     const { user } = useUser();
     
-    const { data, isSuccess, isFetching, isError, refetch } = apiProfile.useGetProfileQuery(user ? user.id : '123');
+    const { data, isSuccess, isFetching, isError, refetch } = apiProfile.useGetProfileQuery({
+        name: user ? user.id : '123'
+    });
+    const [PostElo, result] = apiProfile.usePostEloMutation();
     const navigate =  useNavigate();
     const {restart, moves, win} = useAppSelector(state => state.columns)
 
@@ -84,13 +87,25 @@ const HeaderLite:React.FC = () => {
                     </List>
                     <Divider />
                     <List>
-                        <ListItemButton key={0}  onClick={() => {navigate('/games/easy')}} >
+                        <ListItemButton key={0}  onClick={() => {
+                            PostElo({
+                                name: user ? user.id : '123',
+                                eloChange: -100
+                            })
+                            navigate('/games/easy')
+                            }} >
                             <ListItemIcon>
                             <ThumbUpIcon/>
                             </ListItemIcon>
                             <ListItemText primary='Easy' />
                         </ListItemButton>
-                        <ListItemButton key={1}  onClick={() => {navigate('/games/hard')}} >
+                        <ListItemButton key={1}  onClick={() => {
+                            PostElo({
+                                name: user ? user.id : '123',
+                                eloChange: -20
+                            })
+                            navigate('/games/hard')
+                            }} >
                             <ListItemIcon>
                             <ThumbDownIcon/>
                             </ListItemIcon>
@@ -108,9 +123,9 @@ const HeaderLite:React.FC = () => {
                     <UserButton afterSignOutUrl='/signin'  />
                 </SignedIn>
 
-                <div className='header_profile_info'>
+                <div className='header_profile_info' onClick={() => {navigate('/profile')}}>
                     <h3>{user?.firstName}</h3>
-                    <h4>{isSuccess ? data.elo : '...'}</h4>
+                    <h4>{isSuccess ?  data[0].elo : '...'} elo</h4>
                 </div>
             </div>
             

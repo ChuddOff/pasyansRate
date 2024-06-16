@@ -3,6 +3,9 @@
   height: 100vh;
   overflow: hidden;
 }
+button {
+  cursor:pointer;
+}
 
 .App-logo {
   height: 40vmin;

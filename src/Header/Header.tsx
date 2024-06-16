@@ -29,9 +29,17 @@ const Header:React.FC = () => {
     const {request} = useHttp();
     const { isSignedIn } = useAuth();
     const { user } = useUser();
+
     const { data, isSuccess, isFetching, isError, refetch } = apiProfile.useGetProfileQuery({
         name: user ? user.id : '123'
     });
+    const [PostElo, result] = apiProfile.usePostEloMutation();
+    const [PostTime, result1] = apiProfile.usePostTimeMutation();
+
+    useEffect(() => {
+        refetch()
+    }, [])
+
     const navigate =  useNavigate();
     const {restart, moves, win} = useAppSelector(state => state.columns)
 
@@ -47,10 +55,11 @@ const Header:React.FC = () => {
     useEffect(() => {
         if (win) {
             pause();
-            request(`/api/zamer/postTime${easyHard}`, 'POST', JSON.stringify({
-                name: user?.id,
-                seconds: minutes*60 + seconds
-            }))
+            PostTime({
+                name: user ? user.id : '123',
+                seconds: minutes*60 + seconds,
+                type: easyHard ?? ''
+            })
         }
     }, [win])
 
@@ -60,10 +69,10 @@ const Header:React.FC = () => {
     
 
     const getNewCards = async () => {
-        request('/api/zamer/postElo', 'POST', JSON.stringify({
-            name: user?.id,
+        PostElo({
+            name: user ? user.id : '123',
             eloChange: easyHard === 'easy' ? -100 : -10
-        }))
+        })
         dispatch(setRestart(true))
     }
 
@@ -114,13 +123,25 @@ const Header:React.FC = () => {
                     </List>
                     <Divider />
                     <List>
-                        <ListItemButton key={0}  onClick={() => {navigate('/games/easy')}} >
+                        <ListItemButton key={0}  onClick={() => {
+                            PostElo({
+                                name: user ? user.id : '123',
+                                eloChange: -100
+                            })
+                            navigate('/games/easy')
+                            }} >
                             <ListItemIcon>
                             <ThumbUpIcon/>
                             </ListItemIcon>
                             <ListItemText primary='Easy' />
                         </ListItemButton>
-                        <ListItemButton key={1}  onClick={() => {navigate('/games/hard')}} >
+                        <ListItemButton key={1}  onClick={() => {
+                            PostElo({
+                                name: user ? user.id : '123',
+                                eloChange: -20
+                            })
+                            navigate('/games/hard')
+                            }} >
                             <ListItemIcon>
                             <ThumbDownIcon/>
                             </ListItemIcon>
@@ -144,9 +165,9 @@ const Header:React.FC = () => {
                     <UserButton afterSignOutUrl='/signin' />
                 </SignedIn>
 
-                <div className='header_profile_info'>
+                <div className='header_profile_info' onClick={() => {navigate('/profile')}}>
                     <h3>{user?.firstName}</h3>
-                    <h4>{isSuccess ? data.elo : '...'}</h4>
+                    <h4>{isSuccess ? data[0].elo : '...'} elo</h4>
                 </div>
             </div>
             

@@ -40,3 +40,14 @@ export interface ProfileResponse {
 export interface ProfileBody {
   name: string;
 }
+
+export interface EloBody {
+  name: string;
+  eloChange: number;
+}
+
+export interface TimeBody {
+  name: string;
+  seconds: number;
+  type: string
+}

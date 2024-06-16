@@ -66,7 +66,7 @@ const initialState: UserState = {
 //     }
 // }
 
-const ColumnsSlice = createSlice({
+export const ColumnsSlice = createSlice({
     name: 'Columns',
     initialState,
     reducers: {

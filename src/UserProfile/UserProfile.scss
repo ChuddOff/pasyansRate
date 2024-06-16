@@ -60,7 +60,10 @@
         background-color: rgb(43, 123, 59);
 
         img {
-            height: 100px;
+            max-width: 200px;
+
+
+            border-radius: 100%;
         }
         .stats {
 

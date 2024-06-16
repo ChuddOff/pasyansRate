@@ -12,7 +12,9 @@ import "./WinModal.scss";
 import { currentCard } from "../store/reducers/interfaces";
 import { log } from "console";
 import JSConfetti from 'js-confetti'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { apiProfile } from "../store/reducers/CardsServices";
+import { useUser } from "@clerk/clerk-react";
 
 
 const WinModal: React.FC = () => {
@@ -20,6 +22,11 @@ const WinModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const jsConfetti = new JSConfetti()
   const navigate =  useNavigate();
+  const [PostElo, result] = apiProfile.usePostEloMutation();
+  const {easyHard} = useParams();
+  const { user } = useUser();
+
+  const {win} = useAppSelector(state => state.columns)
 
   const closeModal = () => {
     // ref.current?.classList.add("setHide");
@@ -31,22 +38,29 @@ const WinModal: React.FC = () => {
   };
 
   useEffect(() => {
-    jsConfetti.addConfetti({
+    if (win) {
+      jsConfetti.addConfetti({
+        emojis: ['⚡️', '🥶', '🎁', '🧨'],
+        emojiSize: 50,
+        confettiNumber: 10,
+     })
+     jsConfetti.addConfetti({
       emojis: ['⚡️', '🥶', '🎁', '🧨'],
       emojiSize: 50,
       confettiNumber: 10,
    })
-   jsConfetti.addConfetti({
-    emojis: ['⚡️', '🥶', '🎁', '🧨'],
-    emojiSize: 50,
-    confettiNumber: 10,
- })
-  jsConfetti.addConfetti({
-    emojis: ['⚡️', '🥶', '🎁', '🧨'],
-    emojiSize: 50,
-    confettiNumber: 10,
-})
+    jsConfetti.addConfetti({
+      emojis: ['⚡️', '🥶', '🎁', '🧨'],
+      emojiSize: 50,
+      confettiNumber: 10,
   })
+  PostElo({
+    name: user ? user.id : '123',
+    eloChange: easyHard === 'easy' ? 20 : 100
+  })
+    }
+    
+  }, [win])
 
   return (
     <div className="modalWin">
