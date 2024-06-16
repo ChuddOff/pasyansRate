@@ -8,7 +8,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import About from '../About/About';
 import Login from '../Login/Login';
-import { ClerkProvider } from '@clerk/clerk-react'
+import Profile from '../pages/Profile';
+import AppProfile from '../pages/Profile';
+import { ClerkProvider } from '@clerk/clerk-react';
+import Stats from '../pages/Stats';
 const PUBLISHABLE_KEY: string = process.env.VITE_CLERK_PUBLISHABLE_KEY ?? 'pk_test_Z2l2aW5nLWNvdy05LmNsZXJrLmFjY291bnRzLmRldiQ';
 
 const ChooseGame = lazy(() => import ('../pages/choosegame'))
@@ -31,6 +34,10 @@ function App() {
               <Route path="/signin" element={<Login />} />
 
               <Route path="/games" element={<ChooseGame />} />
+
+              <Route path="/profile" element={<Profile />} />
+
+              <Route path="/stats" element={<Stats />} />
 
               <Route path="/games/:easyHard" element={<Game />} />
 

@@ -27,3 +27,16 @@ export interface currentCard {
   isPlace: boolean;
   isField: boolean
 }
+
+export interface ProfileResponse {
+    name: string;
+    elo: number;
+    bestEasy: number;
+    bestHard: number;
+    wins: number;
+    fails:number;
+}
+
+export interface ProfileBody {
+  name: string;
+}

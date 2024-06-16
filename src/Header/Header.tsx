@@ -21,6 +21,7 @@ import './Header.scss'
 import { setRestart } from '../store/reducers/ColumnsSlice';
 import { useAuth, SignedIn, UserButton, useUser  } from "@clerk/clerk-react";
 import { useHttp } from '../hooks/http.hook';
+import { apiCards, apiProfile } from '../store/reducers/CardsServices';
  
 const Header:React.FC = () => {
 
@@ -28,7 +29,9 @@ const Header:React.FC = () => {
     const {request} = useHttp();
     const { isSignedIn } = useAuth();
     const { user } = useUser();
-
+    const { data, isSuccess, isFetching, isError, refetch } = apiProfile.useGetProfileQuery({
+        name: user ? user.id : '123'
+    });
     const navigate =  useNavigate();
     const {restart, moves, win} = useAppSelector(state => state.columns)
 
@@ -50,6 +53,11 @@ const Header:React.FC = () => {
             }))
         }
     }, [win])
+
+    console.log(data);
+    console.log(isSuccess);
+    
+    
 
     const getNewCards = async () => {
         request('/api/zamer/postElo', 'POST', JSON.stringify({
@@ -91,13 +99,13 @@ const Header:React.FC = () => {
                             </ListItemIcon>
                             <ListItemText primary='Home' />
                         </ListItemButton>
-                        <ListItemButton key={1}>
+                        <ListItemButton key={1} onClick={() => {navigate('/profile')}}>
                             <ListItemIcon>
                             <AccountCircleIcon/>
                             </ListItemIcon>
                             <ListItemText primary='Profile' />
                         </ListItemButton>
-                        <ListItemButton key={2}>
+                        <ListItemButton key={2} onClick={() => {navigate('/stats')}}>
                             <ListItemIcon>
                             <BarChartIcon/>
                             </ListItemIcon>
@@ -138,7 +146,7 @@ const Header:React.FC = () => {
 
                 <div className='header_profile_info'>
                     <h3>{user?.firstName}</h3>
-                    <h4>Rate 1000</h4>
+                    <h4>{isSuccess ? data.elo : '...'}</h4>
                 </div>
             </div>
             

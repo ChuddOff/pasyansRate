@@ -13,23 +13,30 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useHttp } from '../hooks/http.hook';
 import { useAuth, SignedIn, UserButton, useUser, useSignUp  } from "@clerk/clerk-react";
 
 import './HeaderLite.scss'
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { apiProfile } from '../store/reducers/CardsServices';
 
  
 const HeaderLite:React.FC = () => {
 
+    const {easyHard} = useParams();
     const {request} = useHttp();
-
     const { isSignedIn } = useAuth();
     const { user } = useUser();
-    const {  } = useSignUp();
+    
+    const { data, isSuccess, isFetching, isError, refetch } = apiProfile.useGetProfileQuery(user ? user.id : '123');
+    const navigate =  useNavigate();
+    const {restart, moves, win} = useAppSelector(state => state.columns)
+
+    const dispatch = useAppDispatch();
+
 
     const [open, setOpen] = useState(false);
-    const navigate =  useNavigate();
 
     useEffect(() =>  {
 
@@ -55,20 +62,20 @@ const HeaderLite:React.FC = () => {
             </div>
             <Drawer open={open} className='drawer' onClose={() => {setOpen(false)}}>
                 <Box sx={{ width: 250, backgroundColor: 313131 }} role="presentation" className='box' onClick={() => {setOpen(false)}}>
-                    <List>
-                        <ListItemButton key={0}>
-                            <ListItemIcon onClick={() => {navigate('/games')}}>
+                <List>
+                        <ListItemButton key={0} onClick={() => {navigate('/games')}}>
+                            <ListItemIcon>
                             <CottageIcon/>
                             </ListItemIcon>
                             <ListItemText primary='Home' />
                         </ListItemButton>
-                        <ListItemButton key={1}>
+                        <ListItemButton key={1} onClick={() => {navigate('/profile')}}>
                             <ListItemIcon>
                             <AccountCircleIcon/>
                             </ListItemIcon>
                             <ListItemText primary='Profile' />
                         </ListItemButton>
-                        <ListItemButton key={2}>
+                        <ListItemButton key={2} onClick={() => {navigate('/stats')}}>
                             <ListItemIcon>
                             <BarChartIcon/>
                             </ListItemIcon>
@@ -103,7 +110,7 @@ const HeaderLite:React.FC = () => {
 
                 <div className='header_profile_info'>
                     <h3>{user?.firstName}</h3>
-                    <h4>Rate 1000</h4>
+                    <h4>{isSuccess ? data.elo : '...'}</h4>
                 </div>
             </div>
             
