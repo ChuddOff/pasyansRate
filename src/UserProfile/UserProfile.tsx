@@ -12,7 +12,8 @@ const AppProfile: React.FC = () => {
     const { data, isSuccess, isFetching, isError, refetch } = apiProfile.useGetProfileQuery({
         name: user ? user.id : '123'
     });
-
+    console.log(data?.[0]);
+    
     return ( 
         <main className="profile">
             <h1>Your profile</h1>
@@ -23,12 +24,12 @@ const AppProfile: React.FC = () => {
 
                 <div className="stats">
                     <h3>Name: {user?.fullName}</h3>
-                    <h3>Mathes started: {data ? data[0].fails+data[0].wins : 0}</h3>
+                    <h3>Matches played: {data ? data[0].fails+data[0].wins : 0}</h3>
                     <h3>Wins: {data ? data[0].wins : 0}</h3>
                     <h3>Fails: {data ? data[0].fails : 0}</h3>
-                    <h3>Win rate: {data ? (data[0].wins / (data[0].fails || 1)).toString().slice(0, 4) : 0}</h3>
-                    <h3>Your best easy time: {data ? data[0].bestEasy: 0}</h3>
-                    <h3>Your best hard time: {data ? data[0].bestHard: 0}</h3>
+                    <h3>Win rate: {data ? (data[0].wins / (data[0].fails || 1)).toString().slice(0, 4) : 0} %</h3>
+                    <h3>Your best easy time: {data ? data[0].bestEasy: 0} sec</h3>
+                    <h3>Your best hard time: {data ? data[0].bestHard: 0} sec</h3>
                 </div>
             </div>
 

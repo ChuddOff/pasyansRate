@@ -47,6 +47,12 @@ const getIcon = (suit: string, value: string) => {
         return `/${suit}.png`
     } 
 }
+
+const playSound = (url: string) => {
+    const mp3 = new Audio(url)
+    mp3.volume = 0.3
+    mp3.play()
+}
  
 export const CardItem: React.FC<CardItemProps> = ({suit, value, code, bottom=0, show=false, columnIndex = 0, cardIndex = 0, isOther=false, isPlace=false, isField=false}) => {
     
@@ -189,6 +195,7 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
                         dispatch(addPlaceCard(i))
                         dispatch(upPlaceHolderReq(i))
                         dispatch(deleteCard())
+                        playSound('/place.mp3')
                         unFound = false
                         break
                     }
@@ -201,6 +208,7 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
                     if (!columns[i].slice(-1)[0] && getCardByCode(code).value==='KING') {
                         dispatch(addKingCard(i))
                         dispatch(deleteCard())
+                        playSound('/place.mp3')
                         break
                     }
         
@@ -208,6 +216,7 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
                         
                         dispatch(addCard(getCardByCode(columns[i].slice(-1)[0]).code))
                         dispatch(deleteCard())
+                        playSound('/place.mp3')
                         break
                     }
                 } 
@@ -277,6 +286,7 @@ export const PlaceHolder: React.FC<PlaceHolder> = ({index = 0, bottom, code='0',
         if (valueArr.indexOf(currentCard.value) === valueArr.indexOf(getCardByCode(code).value)-1 && isRightSuit) {
             dispatch(addCard(getCardByCode(code).code))
             dispatch(deleteCard())
+            playSound('/place.mp3')
         }
 
     }
@@ -286,6 +296,7 @@ export const PlaceHolder: React.FC<PlaceHolder> = ({index = 0, bottom, code='0',
         if (valueArr.indexOf(currentCard.value) === 12) {
             dispatch(addKingCard(index))
             dispatch(deleteCard())
+            playSound('/place.mp3')
         }
 
     }

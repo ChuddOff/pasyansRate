@@ -18,11 +18,18 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import CachedIcon from '@mui/icons-material/Cached';
 import { useNavigate, useParams } from "react-router-dom";
 import './Header.scss'
-import { setRestart } from '../store/reducers/ColumnsSlice';
+import { resetColumns, setRestart } from '../store/reducers/ColumnsSlice';
 import { useAuth, SignedIn, UserButton, useUser  } from "@clerk/clerk-react";
 import { useHttp } from '../hooks/http.hook';
 import { apiCards, apiProfile } from '../store/reducers/CardsServices';
  
+
+const playSound = (url: string) => {
+    const mp3 = new Audio(url)
+    mp3.volume = 0.3
+    mp3.play()
+}
+
 const Header:React.FC = () => {
 
     const {easyHard} = useParams();
@@ -35,10 +42,11 @@ const Header:React.FC = () => {
     });
     const [PostElo, result] = apiProfile.usePostEloMutation();
     const [PostTime, result1] = apiProfile.usePostTimeMutation();
+    const [PostFail, result2] = apiProfile.usePostFailMutation();
 
-    useEffect(() => {
-        refetch()
-    }, [])
+    // useEffect(() => {
+    //     refetch()
+    // }, [])
 
     const navigate =  useNavigate();
     const {restart, moves, win} = useAppSelector(state => state.columns)
@@ -46,15 +54,17 @@ const Header:React.FC = () => {
     const dispatch = useAppDispatch();
 
     const [open, setOpen] = useState(false);
-    const { seconds, minutes, start, pause, reset } = useStopwatch({ autoStart: true });
+    const { seconds, minutes, start, pause, reset } = useStopwatch({autoStart: true});
 
-    useEffect(() => {
-        start()
-    }, [start])
+    // useEffect(() => {
+    //     start()
+    // }, [start])
 
     useEffect(() => {
         if (win) {
             pause();
+            console.log(234);
+            
             PostTime({
                 name: user ? user.id : '123',
                 seconds: minutes*60 + seconds,
@@ -62,17 +72,18 @@ const Header:React.FC = () => {
             })
         }
     }, [win])
-
-    console.log(data);
-    console.log(isSuccess);
     
     
 
     const getNewCards = async () => {
+        PostFail({
+            name: user ? user.id : '123',
+        })
         PostElo({
             name: user ? user.id : '123',
-            eloChange: easyHard === 'easy' ? -100 : -10
+            eloChange: easyHard === 'easy' ? -100 : -20
         })
+        playSound('/boom.mp3')
         dispatch(setRestart(true))
     }
 
@@ -124,10 +135,15 @@ const Header:React.FC = () => {
                     <Divider />
                     <List>
                         <ListItemButton key={0}  onClick={() => {
+                            PostFail({
+                                name: user ? user.id : '123',
+                            })
                             PostElo({
                                 name: user ? user.id : '123',
                                 eloChange: -100
                             })
+                            easyHard == 'hard' && dispatch(resetColumns())
+                            playSound('/start.mp3')
                             navigate('/games/easy')
                             }} >
                             <ListItemIcon>
@@ -136,10 +152,15 @@ const Header:React.FC = () => {
                             <ListItemText primary='Easy' />
                         </ListItemButton>
                         <ListItemButton key={1}  onClick={() => {
+                            PostFail({
+                                name: user ? user.id : '123',
+                            })
                             PostElo({
                                 name: user ? user.id : '123',
                                 eloChange: -20
                             })
+                            easyHard == 'easy' && dispatch(resetColumns())
+                            playSound('/start.mp3')
                             navigate('/games/hard')
                             }} >
                             <ListItemIcon>
@@ -167,7 +188,7 @@ const Header:React.FC = () => {
 
                 <div className='header_profile_info' onClick={() => {navigate('/profile')}}>
                     <h3>{user?.firstName}</h3>
-                    <h4>{isSuccess ? data[0].elo : '...'} elo</h4>
+                    <h4>{isSuccess && data[0] ?  data?.[0]?.elo : '...'} elo</h4>
                 </div>
             </div>
             

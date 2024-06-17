@@ -9,7 +9,8 @@ export const apiCards = createApi({
             query: () => '/deck/new/draw/?count=52'
         }),
     })
-}) 
+})
+
 export const apiProfile = createApi({
     reducerPath: 'apiProfile',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:4000' }),
@@ -26,6 +27,15 @@ export const apiProfile = createApi({
             }),
             providesTags: ['Profile'],
         }),
+        getAll: builder.query<ProfileResponse[], void>({
+            query: () => ({
+                url: `/api/zamer/getProfile`,
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+        }),
         postElo: builder.mutation<void, EloBody>({
             query: (body) => ({
                 url: `/api/zamer/postElo`,
@@ -39,7 +49,29 @@ export const apiProfile = createApi({
         }),
         postTime: builder.mutation<void, TimeBody>({
             query: (body) => ({
-                url: `/api/zamer/postElo`,
+                url: `/api/zamer/postTime`,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body,
+            }),
+            invalidatesTags: ['Profile'],
+        }),
+        postWin: builder.mutation<void, ProfileBody>({
+            query: (body) => ({
+                url: `/api/zamer/postWin`,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body,
+            }),
+            invalidatesTags: ['Profile'],
+        }),
+        postFail: builder.mutation<void, ProfileBody>({
+            query: (body) => ({
+                url: `/api/zamer/postFail`,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

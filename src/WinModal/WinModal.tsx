@@ -7,6 +7,7 @@ import {
   addPlaceCard,
   upPlaceHolderReq,
   endUpPlaceHolder,
+  resetColumns,
 } from "../store/reducers/ColumnsSlice";
 import "./WinModal.scss";
 import { currentCard } from "../store/reducers/interfaces";
@@ -25,6 +26,7 @@ const WinModal: React.FC = () => {
   const [PostElo, result] = apiProfile.usePostEloMutation();
   const {easyHard} = useParams();
   const { user } = useUser();
+  const [PostWin, result2] = apiProfile.usePostWinMutation();
 
   const {win} = useAppSelector(state => state.columns)
 
@@ -34,6 +36,7 @@ const WinModal: React.FC = () => {
     // setTimeout(() => {
     //   dispatch(toggleShowModal());
     // }, 50);
+    
     navigate('/games')
   };
 
@@ -56,8 +59,13 @@ const WinModal: React.FC = () => {
   })
   PostElo({
     name: user ? user.id : '123',
-    eloChange: easyHard === 'easy' ? 20 : 100
+    eloChange: easyHard === 'easy' ? 120 : 200
   })
+  PostWin({
+    name: user ? user.id : '123',
+  })
+  console.log(1);
+  
     }
     
   }, [win])
@@ -72,7 +80,9 @@ const WinModal: React.FC = () => {
           </h2>
 
           <div className="buttonsWin">
-            <button type="button" onClick={closeModal}>
+            <button type="button" onClick={() => {
+              closeModal()
+            }}>
               Continue
             </button>
           </div>

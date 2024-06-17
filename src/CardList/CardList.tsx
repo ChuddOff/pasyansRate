@@ -4,19 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import './CardList.scss'
-import { apiCards } from "../store/reducers/CardsServices";
+import { apiCards, apiProfile } from "../store/reducers/CardsServices";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { endUpPlaceHolder, setAutoComplete, setColumns, setRestart, setWin, toggleShowModal } from "../store/reducers/ColumnsSlice";
+import { endUpPlaceHolder, resetColumns, setAutoComplete, setColumns, setRestart, setWin, toggleShowModal } from "../store/reducers/ColumnsSlice";
 import Modal from '../Modal/Modal';
 import { useNavigate, useParams } from "react-router-dom";
 import WinModal from "../WinModal/WinModal";
 import JSConfetti from 'js-confetti'
+import { useUser } from "@clerk/clerk-react";
 
-interface CardListProps {
-    
-}
+
  
-const CardList: React.FC<CardListProps> = () => {
+const CardList: React.FC = () => {
     const jsConfetti = new JSConfetti()
     const {easyHard} = useParams();
     
@@ -29,7 +28,7 @@ const CardList: React.FC<CardListProps> = () => {
         bottomRange = 38;
     }
 
-
+    
     const dispatch = useAppDispatch();
 
     const [ end, setEnd] = useState(false)
@@ -45,12 +44,18 @@ const CardList: React.FC<CardListProps> = () => {
     if (isError) {
         console.log('Error');
     }
-    if (isFetching) {
-        console.log('Loading');
-    }
+    
+
+    useEffect(() => {
+        if (isFetching) {
+            console.log('Loading');
+        }
+        
+    }, [isFetching])
 
     useEffect(() => {
         if (isSuccess) {
+            dispatch(resetColumns())
             dispatch(setColumns(data.cards))
             dispatch(setRestart(false))
         }
@@ -88,6 +93,7 @@ const CardList: React.FC<CardListProps> = () => {
 
     useEffect(() => {
         if (restart) {
+            dispatch(resetColumns())
             refetch()
             jsConfetti.addConfetti({
                 emojis: ['💣'],
@@ -113,7 +119,6 @@ const CardList: React.FC<CardListProps> = () => {
       }
       
     }
-
     return (  
         <div>
         <div 

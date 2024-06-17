@@ -9,7 +9,7 @@ const UserStats: React.FC = () => {
             <h1>Just your stats!</h1>
 
             <div className='statsBlock'>
-
+                
             </div>
         </main>
      );

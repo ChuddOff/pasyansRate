@@ -70,7 +70,7 @@ export const ColumnsSlice = createSlice({
     name: 'Columns',
     initialState,
     reducers: {
-        setColumns: (state, action: PayloadAction<Card[]>) => {
+        resetColumns: (state) => {
             
             state.cards = [];
             state.columns = [[], [], [], [], [], [], []];
@@ -97,6 +97,8 @@ export const ColumnsSlice = createSlice({
             state.autoComplete = false;
             state.restart = false;
             state.win = false;
+        },
+        setColumns: (state, action: PayloadAction<Card[]>) => {
         
             const columnsUpdate: Card[][] =  [[], [], [], [], [], [], []]
             const cardsUpdate: Card[]  =  [...action.payload];
@@ -275,6 +277,7 @@ export const ColumnsSlice = createSlice({
 export default ColumnsSlice.reducer;
 
 export const {
+    resetColumns,
     updateCards,
     setColumns,
     addOpenedCard,

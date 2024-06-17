@@ -8,6 +8,11 @@ import { transform } from 'typescript';
 import { HtmlHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 
+const playSound = (url: string) => {
+    const mp3 = new Audio(url)
+    mp3.volume = 0.3
+    mp3.play()
+}
  
 const Header2: React.FC = () => {
 
@@ -55,6 +60,7 @@ const Header2: React.FC = () => {
             dispatch(upPlaceHolderReq(NumberSuit))
             dispatch(addPlaceCard(NumberSuit));
             dispatch(deleteCard())
+            playSound('/place.mp3')
         }
     }
 

@@ -21,6 +21,11 @@ import './HeaderLite.scss'
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { apiProfile } from '../store/reducers/CardsServices';
 
+const playSound = (url: string) => {
+    const mp3 = new Audio(url)
+    mp3.volume = 0.3
+    mp3.play()
+}
  
 const HeaderLite:React.FC = () => {
 
@@ -33,6 +38,7 @@ const HeaderLite:React.FC = () => {
         name: user ? user.id : '123'
     });
     const [PostElo, result] = apiProfile.usePostEloMutation();
+    const [PostFail, result2] = apiProfile.usePostFailMutation();
     const navigate =  useNavigate();
     const {restart, moves, win} = useAppSelector(state => state.columns)
 
@@ -88,10 +94,16 @@ const HeaderLite:React.FC = () => {
                     <Divider />
                     <List>
                         <ListItemButton key={0}  onClick={() => {
+                            PostFail({
+                                name: user ? user.id : '123',
+                            })
                             PostElo({
                                 name: user ? user.id : '123',
                                 eloChange: -100
                             })
+
+                            playSound('/start.mp3')
+
                             navigate('/games/easy')
                             }} >
                             <ListItemIcon>
@@ -100,11 +112,18 @@ const HeaderLite:React.FC = () => {
                             <ListItemText primary='Easy' />
                         </ListItemButton>
                         <ListItemButton key={1}  onClick={() => {
+                            PostFail({
+                                name: user ? user.id : '123',
+                            })
                             PostElo({
                                 name: user ? user.id : '123',
                                 eloChange: -20
                             })
+
+                            playSound('/start.mp3')
+
                             navigate('/games/hard')
+                            
                             }} >
                             <ListItemIcon>
                             <ThumbDownIcon/>
@@ -125,7 +144,7 @@ const HeaderLite:React.FC = () => {
 
                 <div className='header_profile_info' onClick={() => {navigate('/profile')}}>
                     <h3>{user?.firstName}</h3>
-                    <h4>{isSuccess ?  data[0].elo : '...'} elo</h4>
+                    <h4>{isSuccess && data[0] ?  data?.[0]?.elo : '...'} elo</h4>
                 </div>
             </div>
             
