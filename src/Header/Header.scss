@@ -80,7 +80,9 @@ $mobile-s: 480px;
 
 
         &_profile {
-            width: 120px;
+            max-width: 300px;
+            min-width: 141px;
+            width: 100%;
             display: flex;
             align-items: center;
             gap: 5px;
