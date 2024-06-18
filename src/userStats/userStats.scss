@@ -26,7 +26,71 @@
         border-radius: 15px;
         overflow-y: scroll;
         scroll-behavior: smooth;
-        
+        padding: 10px;
+
+        .topitem {
+            width: 100%;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 50px;
+                height: 50px;
+                border-radius: 100%;
+            }
+            h4 {
+                text-align: center;
+                text-shadow: 0px 3px 2px rgb(0, 0, 0);
+                vertical-align: middle;
+                margin: 0;
+                margin-bottom: 30px;
+                margin-top: 30px;
+                font-size: 25px;
+                margin: 0;
+            }
+            .statsBlockDetails {
+                display: flex;
+                flex-direction: column;
+                h4 {
+                    text-align: center;
+                    text-shadow: 0px 3px 2px rgb(0, 0, 0);
+                    vertical-align: middle;
+                    margin: 0;
+                    margin-bottom: 30px;
+                    margin-top: 30px;
+                    font-size: 25px;
+                    margin: 0;
+                }
+                h3 {
+                    text-align: center;
+                    text-shadow: 0px 3px 2px rgb(0, 0, 0);
+                    vertical-align: middle;
+                    margin: 0;
+                    margin-bottom: 30px;
+                    margin-top: 30px;
+                    font-size: 25px;
+                    margin: 0;
+                }
+            }
+            
+            
+            }
+            .highlight {
+                h3 {
+                    font-size: 30px;
+                    text-shadow: 0px 3px 2px rgb(0, 0, 0);
+                }
+                h4 {
+                    font-size: 30px;
+                    text-shadow: 0px 3px 2px rgb(0, 0, 0);
+                }
+                img {
+                    width: 70px;
+                    height: 70px;
+                }
+        }
     }
     .statsBlock::-webkit-scrollbar {
         width: 12px;
@@ -50,6 +114,39 @@ $mobile: 1567px;
         .statsBlock {
             width: 100%;
             height: 550px;
+
+            .topitem {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+    
+                img {
+                    width: 40px;
+                    height: 40px;
+                }
+                h4 {
+                    font-size: 16px;
+                }
+                h3 {
+                    font-size: 16px;
+                }
+                
+                }
+                .highlight {
+                    h3 {
+                        font-size: 20px;
+                        text-shadow: 0px 3px 2px rgb(0, 0, 0);
+                    }
+                    h4 {
+                        font-size: 20px;
+                        text-shadow: 0px 3px 2px rgb(0, 0, 0);
+                    }
+                    img {
+                        width: 50px;
+                        height: 50px;
+                    }
+            }
         }
     }
 }
