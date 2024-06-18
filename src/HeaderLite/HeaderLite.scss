@@ -30,7 +30,8 @@
     }
 
     &_profile {
-        width: 141px;
+        max-width: 300px;
+        min-width: 141px;
         display: flex;
         align-items: center;
         gap: 5px;

@@ -23,7 +23,7 @@ const AppProfile: React.FC = () => {
                 <img src={user?.imageUrl} alt="" />
 
                 <div className="stats">
-                    <h3>Name: {user?.fullName}</h3>
+                    <h3>Name: {user?.fullName?.slice(0, 10)}</h3>
                     <h3>Matches played: {data ? data[0].fails+data[0].wins : 0}</h3>
                     <h3>Wins: {data ? data[0].wins : 0}</h3>
                     <h3>Fails: {data ? data[0].fails : 0}</h3>

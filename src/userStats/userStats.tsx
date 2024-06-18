@@ -26,7 +26,7 @@ const UserStats: React.FC = () => {
                             <h4>{i+1}. </h4>
                             <img src={item.url} alt="" />
                             <div className='statsBlockDetails'>
-                                <h4>{item.fullName.slice(0, 16)}</h4>
+                                <h4>{item.fullName.slice(0, 10)}</h4>
                                 <h3>{'(' + item.elo + ' elo)'} </h3>
                             </div>
                         </div>
