@@ -49,15 +49,6 @@ const HeaderLite:React.FC = () => {
 
     useEffect(() =>  {
 
-        if (localStorage.getItem('firstReg') === 't') {
-            console.log(localStorage.getItem('firstReg'));
-            
-            localStorage.setItem('firstReg', 'f')
-            request('/api/zamer/postProfile', 'POST', JSON.stringify({
-                name: user?.id
-            }))
-        }
-
         if (!isSignedIn) {
             navigate('/signin');
         }

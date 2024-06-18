@@ -35,10 +35,18 @@ export interface ProfileResponse {
     bestHard: number;
     wins: number;
     fails:number;
+    fullName: string;
+    url: string;
 }
 
 export interface ProfileBody {
   name: string;
+}
+
+export interface ProfilePostBody {
+  name: string;
+  fullName: string;
+  url: string;
 }
 
 export interface EloBody {

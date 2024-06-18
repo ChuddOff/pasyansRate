@@ -27,7 +27,7 @@ const AppProfile: React.FC = () => {
                     <h3>Matches played: {data ? data[0].fails+data[0].wins : 0}</h3>
                     <h3>Wins: {data ? data[0].wins : 0}</h3>
                     <h3>Fails: {data ? data[0].fails : 0}</h3>
-                    <h3>Win rate: {data ? (data[0].wins / (data[0].fails || 1)).toString().slice(0, 4) : 0} %</h3>
+                    <h3>Win rate: {data ? (data[0].wins * 100 / (data[0].fails || 1)).toString().slice(0, 4) : 0} %</h3>
                     <h3>Your best easy time: {data ? data[0].bestEasy: 0} sec</h3>
                     <h3>Your best hard time: {data ? data[0].bestHard: 0} sec</h3>
                 </div>

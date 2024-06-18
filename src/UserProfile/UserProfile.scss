@@ -61,7 +61,9 @@
 
         img {
             max-width: 200px;
-
+            user-select: none; /* Для Chrome/Opera/Safari */
+            -webkit-user-select: none; /* Для Chrome/Opera/Safari */
+            box-sizing: border-box;
 
             border-radius: 100%;
         }
@@ -81,5 +83,19 @@
             }
         }
         
+    }
+}
+
+$mobile: 767px;
+
+@media (max-width: $mobile) {
+    .profile {
+        padding: 0 20px;
+        .details {
+            padding: 10px 30px;
+            img {
+                display: none;
+            }
+        }
     }
 }

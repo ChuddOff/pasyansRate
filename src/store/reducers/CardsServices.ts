@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { DeckResponse, EloBody, ProfileBody, ProfileResponse, TimeBody } from './interfaces';
+import { DeckResponse, EloBody, ProfileBody, ProfilePostBody, ProfileResponse, TimeBody } from './interfaces';
 
 export const apiCards = createApi({
     reducerPath: 'apiCards',
@@ -29,12 +29,23 @@ export const apiProfile = createApi({
         }),
         getAll: builder.query<ProfileResponse[], void>({
             query: () => ({
-                url: `/api/zamer/getProfile`,
+                url: `/api/zamer/getAll`,
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             }),
+        }),
+        postProfile: builder.mutation<void, ProfilePostBody>({
+            query: (body) => ({
+                url: `/api/zamer/postProfile`,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body,
+            }),
+            invalidatesTags: ['Profile'],
         }),
         postElo: builder.mutation<void, EloBody>({
             query: (body) => ({

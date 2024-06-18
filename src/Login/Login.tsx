@@ -1,19 +1,24 @@
-import { SignedIn, SignedOut, SignInButton, UserButton, useAuth  } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, SignInButton, UserButton, useAuth, useSignUp, useUser  } from "@clerk/clerk-react";
 import { useNavigate } from 'react-router-dom'
 
 import './Login.scss'
 import { useEffect, useRef, useState } from "react";
+import { apiProfile } from "../store/reducers/CardsServices";
 
  
 const Login: React.FC = () => {
 
+    const [PostProfile, result] = apiProfile.usePostProfileMutation();
     const { isSignedIn } = useAuth();
+    const { user } = useUser();
 
     useEffect(() => {
         if (isSignedIn) {
-            if (localStorage.getItem('firstReg') !== 'f') {
-                localStorage.setItem('firstReg', 't')
-            }
+            PostProfile({
+                name: user?.id ?? '',
+                fullName: user?.fullName ?? '',
+                url: user?.imageUrl ?? ''
+            })
             navigate('/games');
         }
     }, [isSignedIn])
