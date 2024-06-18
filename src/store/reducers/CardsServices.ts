@@ -13,7 +13,7 @@ export const apiCards = createApi({
 
 export const apiProfile = createApi({
     reducerPath: 'apiProfile',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:4000' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://pasyans-back.vercel.app' }),
     tagTypes: ['Profile'],
     endpoints: (builder) => ({
         getProfile: builder.query<ProfileResponse[], ProfileBody>({
