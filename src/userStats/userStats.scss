@@ -26,13 +26,12 @@
         border-radius: 15px;
         overflow-y: scroll;
         scroll-behavior: smooth;
-        padding: 10px;
+        padding: 20px 50px;
 
         .topitem {
             width: 100%;
             display: flex;
             gap: 20px;
-            align-items: center;
             justify-content: center;
 
             img {
@@ -114,12 +113,9 @@ $mobile: 1567px;
         .statsBlock {
             width: 100%;
             height: 550px;
+            padding: 10px;
 
             .topitem {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-wrap: wrap;
     
                 img {
                     width: 40px;

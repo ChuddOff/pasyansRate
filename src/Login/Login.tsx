@@ -16,7 +16,7 @@ const Login: React.FC = () => {
         if (isSignedIn) {
             PostProfile({
                 name: user?.id ?? '',
-                fullName: user?.fullName ?? '',
+                fullName: user?.firstName ?? '',
                 url: user?.imageUrl ?? ''
             })
             navigate('/games');

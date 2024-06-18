@@ -187,7 +187,7 @@ const Header:React.FC = () => {
                 </SignedIn>
 
                 <div className='header_profile_info' onClick={() => {navigate('/profile')}}>
-                    <h3>{user?.firstName}</h3>
+                    <h3>{user?.firstName?.slice(0, 16)}</h3>
                     <h4>{isSuccess && data[0] ?  data?.[0]?.elo : '...'} elo</h4>
                 </div>
             </div>
