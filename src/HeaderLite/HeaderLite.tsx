@@ -20,6 +20,7 @@ import { useAuth, SignedIn, UserButton, useUser, useSignUp  } from "@clerk/clerk
 import './HeaderLite.scss'
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { apiProfile } from '../store/reducers/CardsServices';
+import { setRestart } from '../store/reducers/ColumnsSlice';
 
 const playSound = (url: string) => {
     const mp3 = new Audio(url)
@@ -94,7 +95,7 @@ const HeaderLite:React.FC = () => {
                             })
 
                             playSound('/start.mp3')
-
+                            dispatch(setRestart(true))
                             navigate('/games/easy')
                             }} >
                             <ListItemIcon>
@@ -112,7 +113,7 @@ const HeaderLite:React.FC = () => {
                             })
 
                             playSound('/start.mp3')
-
+                            dispatch(setRestart(true))
                             navigate('/games/hard')
                             
                             }} >

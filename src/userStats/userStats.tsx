@@ -6,6 +6,7 @@ import './userStats.scss'
 import { ProfileResponse } from '../store/reducers/interfaces';
 import { useUser } from '@clerk/clerk-react';
 import { log } from 'console';
+import { Box, LinearProgress } from '@mui/material';
  
 
 const UserStats: React.FC = () => {
@@ -33,6 +34,19 @@ const UserStats: React.FC = () => {
                     )
                 })}
             </div>
+
+            {isFetching && 
+        <div className="blur">
+            <div className="loading">
+                <h2>Loading...</h2>
+
+                <Box sx={{ width: '80%' }}>
+                    <LinearProgress />
+                </Box>
+            </div>
+            
+        </div>
+        }
         </main>
      );
 }

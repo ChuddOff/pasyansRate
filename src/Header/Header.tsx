@@ -145,6 +145,7 @@ const Header:React.FC = () => {
                             easyHard == 'hard' && dispatch(resetColumns())
                             playSound('/start.mp3')
                             navigate('/games/easy')
+                            dispatch(setRestart(true))
                             }} >
                             <ListItemIcon>
                             <ThumbUpIcon/>
@@ -160,6 +161,7 @@ const Header:React.FC = () => {
                                 eloChange: -20
                             })
                             easyHard == 'easy' && dispatch(resetColumns())
+                            dispatch(setRestart(true))
                             playSound('/start.mp3')
                             navigate('/games/hard')
                             }} >
