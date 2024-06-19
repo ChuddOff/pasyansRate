@@ -33,7 +33,7 @@ const About: React.FC = () => {
                         
                     </div>
                     
-                    <img src="/gameplayExample.png" alt="" />
+                    <img src="/gameplayExample.png" alt="" loading="lazy" />
 
                 </div>
             </main>

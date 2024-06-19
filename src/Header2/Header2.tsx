@@ -77,7 +77,7 @@ const Header2: React.FC = () => {
             <div className="cardState">
                 <div className="cardholder" ref={drop0}>
                     {placeHolders[0].length===0 ? 
-                    <img src="/HEARTS_PLACE.png" alt="HEARTS" /> :
+                    <img src="/HEARTS_PLACE.png" alt="HEARTS" loading="lazy" /> :
                     <CardItem 
                     suit={getCardByCode(placeHolders[0].slice(-1)[0]).suit} 
                     value={getCardByCode(placeHolders[0].slice(-1)[0]).value} 
@@ -87,7 +87,7 @@ const Header2: React.FC = () => {
   
                 <div className="cardholder" ref={drop1}>
                     {placeHolders[1].length===0 ? 
-                        <img src="/DIAMONDS_PLACE.png" alt="DIAMONDS" /> :
+                        <img src="/DIAMONDS_PLACE.png" alt="DIAMONDS" loading="lazy" /> :
                         <CardItem 
                         suit={getCardByCode(placeHolders[1].slice(-1)[0]).suit} 
                         value={getCardByCode(placeHolders[1].slice(-1)[0]).value} 
@@ -97,7 +97,7 @@ const Header2: React.FC = () => {
 
                 <div className="cardholder" ref={drop2}>
                     {placeHolders[2].length===0 ? 
-                        <img src="/CLUBS_PLACE.png" alt="CLUBS" /> :
+                        <img src="/CLUBS_PLACE.png" alt="CLUBS" loading="lazy" /> :
                         <CardItem 
                         suit={getCardByCode(placeHolders[2].slice(-1)[0]).suit} 
                         value={getCardByCode(placeHolders[2].slice(-1)[0]).value} 
@@ -107,7 +107,7 @@ const Header2: React.FC = () => {
 
                 <div className="cardholder" ref={drop3}>
                     {placeHolders[3].length===0 ? 
-                        <img src="/SPADES_PLACE.png" alt="SPADES" /> :
+                        <img src="/SPADES_PLACE.png" alt="SPADES" loading="lazy" /> :
                         <CardItem 
                         suit={getCardByCode(placeHolders[3].slice(-1)[0]).suit} 
                         value={getCardByCode(placeHolders[3].slice(-1)[0]).value} 
@@ -172,7 +172,7 @@ const Hard = () => {
         }} >
         { cardsOther.length === cardOtherIndex+1 ?
             <div>
-            <img  className='cardButton' src="/REPLACE.png" alt="" />
+            <img  className='cardButton' src="/REPLACE.png" alt="" loading="lazy" />
             </div> :
             <img className='cardButton' src="/CARD.png" alt="" />
         }

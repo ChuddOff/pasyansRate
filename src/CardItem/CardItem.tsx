@@ -240,7 +240,7 @@ const CardReal: React.FC<CardItemProps> = ({suit, value, code, bottom, show, col
                     <h4>{value==='10' ? value : value.charAt(0)}</h4>
                     <img src={`/${suit}.png`} alt="" />
                 </div>
-                <img src={getIcon(suit, value)} alt="" />
+                <img src={getIcon(suit, value)} alt="" loading="lazy" />
             </div>
 
             {show && isDrag && !isDragging ?
