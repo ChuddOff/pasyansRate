@@ -33,7 +33,7 @@ const AppProfile: React.FC = () => {
                 </div>
             </div>
 
-            <button onClick={() => {navigate('/stats')}}>Go to detail stats</button>
+            <button onClick={() => {navigate('/stats')}}>Go to Leader bord</button>
         </main>
      );
 }

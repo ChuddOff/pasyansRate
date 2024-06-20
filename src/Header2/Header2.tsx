@@ -29,7 +29,7 @@ const Header2: React.FC = () => {
     
 
     const dispatch = useAppDispatch();
-    const {currentCard, placeHoldersReq, cards, cardsOther, cardOtherIndex, placeHolders} = useAppSelector(state => state.columns)
+    const {columns, currentCard, placeHoldersReq, cards, cardsOther, cardOtherIndex, placeHolders} = useAppSelector(state => state.columns)
 
     const getCardByCode = (code: string) => {
         return cards[cards.map(item => item.code).indexOf(code)]
@@ -56,7 +56,9 @@ const Header2: React.FC = () => {
 
     const placeCard = (NumberSuit: number, suit: string) => {
         
-        if ((placeHoldersReq[NumberSuit] ?? "ACE") === currentCard.value && currentCard.suit === suit) {
+        if ((placeHoldersReq[NumberSuit] ?? "ACE") === currentCard.value 
+        && currentCard.suit === suit 
+        && columns[currentCard.columnIndex].length-1 == currentCard.cardIndex ) {
             dispatch(upPlaceHolderReq(NumberSuit))
             dispatch(addPlaceCard(NumberSuit));
             dispatch(deleteCard())

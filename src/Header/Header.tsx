@@ -129,7 +129,7 @@ const Header:React.FC = () => {
                             <ListItemIcon>
                             <BarChartIcon/>
                             </ListItemIcon>
-                            <ListItemText primary='Stats' />
+                            <ListItemText primary='Leader bord' />
                         </ListItemButton>
                     </List>
                     <Divider />
