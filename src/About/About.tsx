@@ -14,9 +14,6 @@ const About: React.FC = () => {
                     <a href="https://t.me/chudd_off"><img src="/tg.png" alt="tg" /></a>
                     <a href="https://www.youtube.com/@chudd_off"><img src="/yt.png" alt="youtube" /></a>
                 </div>
-                <button 
-                style={{ backgroundColor: '#34a249' }}
-                onClick={() => {navigate('/games')}}>Start</button>
 
             </header>
             <main className="pasyans">
